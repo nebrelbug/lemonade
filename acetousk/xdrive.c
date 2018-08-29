@@ -16,11 +16,6 @@ task main {
     int r;
     int dn;
 
-    a = vexRT[Ch1];
-    b = vexRT[Ch2];
-    c = vexRT[Ch3];
-    d = vexRT[Ch4];
-
     if((30 < a) && (-30 < b < 30)) {u = true};
     else {u = false};
 
