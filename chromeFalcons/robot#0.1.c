@@ -1,9 +1,10 @@
-#pragma config(Motor,  port2,           left1,         tmotorVex393HighSpeed_MC29, openLoop)
-#pragma config(Motor,  port3,           left2,         tmotorVex393HighSpeed_MC29, openLoop, reversed)
-#pragma config(Motor,  port4,           left3,         tmotorVex393HighSpeed_MC29, openLoop)
-#pragma config(Motor,  port5,           right1,        tmotorVex393HighSpeed_MC29, openLoop)
-#pragma config(Motor,  port6,           right2,        tmotorVex393HighSpeed_MC29, openLoop, reversed)
-#pragma config(Motor,  port7,           right3,        tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port1,           left1,         tmotorVex393HighSpeed_HBridge, openLoop)
+#pragma config(Motor,  port2,           left2,         tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port3,           left3,         tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port4,           right1,        tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port5,           right2,        tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port6,           right3,        tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port7,            ,             tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port8,           lift1,         tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port9,           lift2,         tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port10,          ballIntake,    tmotorVex393_HBridge, openLoop)
@@ -15,34 +16,38 @@ task main() {
 		char liftDebug = 0;
 
 		//MOtor joystick program
-		motor[port2] = vexRT[Ch3];
-		motor[port3] = vexRT[Ch3];
-		motor[port7] = vexRT[Ch3];
-		motor[port5] = vexRT[Ch2];
-		motor[port6] = vexRT[Ch2];
-		motor[port4] = vexRT[Ch2];
+		motor[left1]  = vexRT[Ch3];
+		motor[left2]  = vexRT[Ch3];
+		motor[left3]  = vexRT[Ch3];
+		motor[right1] = vexRT[Ch2];
+		motor[right2] = vexRT[Ch2];
+		motor[right3] = vexRT[Ch2];
 
 		//lift program press both buttons at same time
-		if((vexRT[Btn5D]==true)&&(vexRT[Btn5U]==true)) {
+		if((vexRT[Btn6D]==true)&&(vexRT[Btn6U]==true)) {
 			char liftDebug=1;
+			motor[lift1]=0;
+			motor[lift2]=0;
+		} else {
+				char liftDebug=0;
 		}
 
 		//LIft program
-		while ((vexRT[Btn5D]==true)&&(liftDebug==0)) {
-			motor[port8] = -127;
-			motor[port9] = -127;
+		while ((vexRT[Btn6D]==true)&&(liftDebug==0)) {
+			motor[lift1] = -127;
+			motor[lift2] = -127;
 		}
-		while ((vexRT[Btn5U]==true)&&(liftDebug==0)) {
-			motor[port8] = 127;
-			motor[port9] = 127;
+		while ((vexRT[Btn6U]==true)&&(liftDebug==0)) {
+			motor[lift1] = 127;
+			motor[lift2] = 127;
 		}
 
 		//ball intake
 		while (vexRT[Btn5D]==true) {
-			motor[port10] = -127;
+			motor[ballIntake] = -127;
 		}
 		while (vexRT[Btn5U]==true) {
-			motor[port10] = 127;
+			motor[ballIntake] = 127;
 		}
 	}
 }
