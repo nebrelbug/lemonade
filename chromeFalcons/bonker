@@ -6,7 +6,7 @@ task main() {
     //Varibles
     char i =0;
     
-		//functions
+    //functions
     //3bonk bonk 3 times
     void 3bonk() {
       while(i<=3){
