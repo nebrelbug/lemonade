@@ -6,17 +6,19 @@
 
 
 //Drive Function
-void driveFunc(int left1, int right1){
-	motor[left] = left1;
-	motor[right] = right1;
+void driveFunc(int power1, int power2){
+	motor[left1] = power1;
+	motor[right1] = power2;
+	motor[left2] = power1;
+	motor[right2] = power2;
+	motor[left3] = power1;
+	motor[right3] = power2;
 }
 
 //Lift Function
 void liftFunc(int power){
-	motor[lift1a] = power;
-	motor[lift2a] = power;
-	motor[lift1b] = -(power);
-	motor[lift2b] = -(power);
+	motor[liftLeft] = power;
+	motor[liftRight] = power;
 }
 
 //Flipper Function
@@ -26,7 +28,7 @@ void flipFunc(int power){
 
 //Intake Function
 void intakeFunc(int power){
-	motor[intakeMotor]=power;
+	motor[intaker]=power;
 }
 
 //user contol lift functions
