@@ -1,4 +1,5 @@
 #pragma config(Sensor, in1,    liftPotent,     sensorPotentiometer)
+#pragma config(Motor,  port1,           intakeMotor,   tmotorVex393_HBridge, openLoop)
 #pragma config(Motor,  port2,           left,          tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port4,           lift1a,        tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port5,           lift1b,        tmotorVex393_MC29, openLoop)
@@ -24,6 +25,7 @@
 #pragma userControlDuration(105)
 
 #include "Vex_Competition_Includes.c" //Main competition background code...do not modify!
+#include "functions.c"
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -55,7 +57,7 @@ bStopTasksBetweenModes = true;
 
 
 task autonomous() {
-
+	auton();
 }
 
 
@@ -68,46 +70,7 @@ task autonomous() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 
-//lift functions
-void liftUp(){
-		motor[lift1a] = -127;
-		motor[lift2a] = -127;
-		motor[lift1b] = 127;
-		motor[lift2b] = 127;
-}
 
-void liftDown(){
-		motor[lift1a] = 127;
-		motor[lift2a] = 127;
-		motor[lift1b] = -127;
-		motor[lift2b] = -127;
-}
-
-void liftStay(){
-		motor[lift1a] = 0;
-		motor[lift2a] = 0;
-		motor[lift1b] = 0;
-		motor[lift2b] = 0;
-}
-
-//flipper functions
-void flip1(){
-	motor[flipper]=127;
-}
-
-void flip2(){
-	motor[flipper]=-127;
-}
-
-void flipStay(){
-	motor[flipper]=0;
-}
-
-//drive function
-void drive(){
-		motor[left]  = vexRT[Ch3];
-		motor[right] = vexRT[Ch2];
-}
 
 task usercontrol() {
 // User control code here, inside the loop
@@ -116,39 +79,16 @@ while (true) {
 // This is the main execution loop for the user control program. Each time through the loop
 // your program should update motor + servo values based on feedback from the joysticks.
 
-		//MOtor joystick program
+		//drive program
 		drive();
 
-		//LIft program
-		if (vexRT[Btn6D]==1){
-			liftUp();
-		} else if (vexRT[Btn6U]==1) {
-				liftDown();
-		} else {
-				liftStay();
-		}
+		//lift program
+		lift();
 
 		//Flipper Program
-		if (vexRT[Btn5D]==1) {
-			flip1();
-		} else if(vexRT[Btn5D]==1){
-				flip2();
-		} else{
-				flipStay();
-		}
+		flip();
 
-		/*
-		--//flyWheel
-		if (vexRT[Btn5D]==1) {
-			motor[flyWheel1] = -127;
-			motor[flyWheel2] = -127;
-			} else if (vexRT[Btn5U]==1) {
-			motor[flyWheel1] = 127;
-			motor[flyWheel2] = 127;
-			} else {
-			motor[flyWheel1] = 0;
-			motor[flyWheel2] = 0;
-		}
-		--*/
+		//intake Program
+		intake();
 	}
 }
