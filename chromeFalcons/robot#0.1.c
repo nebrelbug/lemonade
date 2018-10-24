@@ -1,6 +1,6 @@
 #pragma config(UART_Usage, UART1, uartVEXLCD, baudRate19200, IOPins, None, None)
 #pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
-#pragma config(Sensor, in1,    liftPotent,     sensorNone)
+#pragma config(Sensor, in1,    liftPotent,     sensorPotentiometer)
 #pragma config(Sensor, dgtl1,  left,           sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  right,          sensorQuadEncoder)
 #pragma config(Motor,  port1,           intaker,       tmotorVex393_HBridge, openLoop)

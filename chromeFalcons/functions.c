@@ -40,6 +40,14 @@ void liftDown(){
 	liftFunc(-127);
 }
 
+void liftStayUp(){
+	liftFunc(50);
+}
+
+void liftStayDown(){
+	liftFunc(-50);
+}
+
 void liftStay(){
 	liftFunc(0);
 }
@@ -49,10 +57,14 @@ void lift(){
 	if (vexRT[Btn6D]==1){
 		liftUp();
 		} else if (vexRT[Btn6U]==1) {
-		liftDown();
-		} else {
-		liftStay();
-	}
+			liftDown();
+		} else if(SensorValue[liftPotent]>150){
+			liftStayUp();
+		} else if(SensorValue[liftPotent]<-150){
+			liftStayDown();
+		} else{
+			liftStay();
+		}
 }
 
 //user control flipper functions
@@ -64,8 +76,12 @@ void flip2(){
 	flipFunc(-127);
 }
 
-void flipStay(){
-	flipFunc(0);
+void flipStayUp(){
+	flipFunc(50);
+}
+
+void flipStayDown(){
+	flipFunc(-50);
 }
 
 //user contol flipper program
@@ -74,7 +90,7 @@ void flip(){
 		flip1();
 		} else if(vexRT[Btn5D]==1){
 		flip2();
-		} else{
+		} else if(){
 		flipStay();
 	}
 }
