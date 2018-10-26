@@ -4,6 +4,19 @@
 #pragma autonomousDuration(15)
 #pragma userControlDuration(105)
 
+//ints
+//lift potentiomoters
+int liftPotent(){
+	return(((SensorValue[leftLiftPotent])*(SensorValue[rightLiftPotent]))/2);
+}
+
+int leftDriveEncode(){
+	return(SensorValue[leftEncoder]);
+}
+
+int rightDriveEncode(){
+	return(SensorValue[rightEncoder]);
+}
 
 //Drive Function
 void driveFunc(int power1, int power2){
@@ -58,9 +71,9 @@ void lift(){
 		liftUp();
 		} else if (vexRT[Btn6U]==1) {
 			liftDown();
-		} else if(SensorValue[liftPotent]>150){
+		} else if(liftPotent()>150){
 			liftStayUp();
-		} else if(SensorValue[liftPotent]<-150){
+		} else if(liftPotent()<-150){
 			liftStayDown();
 		} else{
 			liftStay();
