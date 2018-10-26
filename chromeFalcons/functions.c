@@ -133,6 +133,21 @@ void drive(){
 	driveFunc(vexRT[Ch3],vexRT[Ch2]);
 }
 
+void driveForward(){
+	driveFunc(127,127);
+}
+
+void driveBack(){
+	driveFunc(-127,-127);
+}
+
+void driveTurnLeft{
+	driveFunc(-127,127);
+}
+
+void driveTurnRight{
+	driveFunc(127,-127);
+}
 //LCD Functions
 void batteryLCD(){
 
@@ -142,26 +157,6 @@ void batteryLCD(){
 	//Clear LCD of text
 	clearLCDLine(0);                                            // Clear line 1 (0) of the LCD
 	clearLCDLine(1);                                            // Clear line 2 (1) of the LCD
-
-	//Boot Sequence
-	displayLCDString(0,0, "Booting Robot");
-	displayLCDString(1,0, "1");
-	clearLCDLine(1);
-	wait1Msec(250);
-	displayLCDString(1,0, "1 2");
-	clearLCDLine(1);
-	wait1Msec(250);
-	displayLCDString(1,0, "1 2 3");
-	clearLCDLine(1);
-	wait1Msec(250);
-	displayLCDString(1,0, "1 2 3 A");
-	clearLCDLine(1);
-	wait1Msec(250);
-	displayLCDString(1,0, "1 2 3 A B");
-	clearLCDLine(1);
-	wait1Msec(250);
-	displayLCDString(1,0, "1 2 3 A B C");
-	wait1Msec(1000);
 
 	//Display the Primary Robot battery voltage
 	clearLCDLine(0);
