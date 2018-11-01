@@ -237,14 +237,12 @@ void lcd(){
 	/*
 Code Chooser
 ROBOTC on VEX 2.0 Cortex
-
 This program uses the Display functions of ROBOTC on the VEX 2.0 Cortex platform.
 It allows the user to choose from 4 different pieces of code using the left and right buttons
 on the VEX LCD. Once the center button is pressed, the code corresponding with the choice is run.
 This code can be adapted for competition based settings - just place the code for the first
 switch case in the pre_auton function, and the code for the second switch in the autonomous task.
 Replace the basic movement behaviors in the second switch with your own autonomous routines.
-
 ROBOT CONFIGURATION
 MOTORS &amp; SENSORS:
 [I/O Port]                    [Name]                            [Type]                                [Description]
@@ -382,5 +380,4 @@ displayLCDCenteredString(1, "was made!");
 break;
 }
 //------------- End of Robot Movement Code -----------------------
-}
 }
