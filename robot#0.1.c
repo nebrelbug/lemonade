@@ -4,14 +4,14 @@
 #pragma config(Sensor, in2,    rightLiftPotent, sensorNone)
 #pragma config(Sensor, dgtl1,  leftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  rightEncoder,   sensorQuadEncoder)
-#pragma config(Motor,  port1,           intaker,       tmotorVex393_HBridge, openLoop)
+#pragma config(Motor,  port1,           puncher,       tmotorVex393_HBridge, openLoop)
 #pragma config(Motor,  port2,           liftLeft,      tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port3,           left1,         tmotorVex393HighSpeed_MC29, openLoop, reversed)
-#pragma config(Motor,  port4,           left2,         tmotorVex393HighSpeed_MC29, openLoop, reversed)
-#pragma config(Motor,  port5,           left3,         tmotorVex393HighSpeed_MC29, openLoop, reversed)
-#pragma config(Motor,  port6,           right1,        tmotorVex393HighSpeed_MC29, openLoop, reversed)
-#pragma config(Motor,  port7,           right2,        tmotorVex393HighSpeed_MC29, openLoop, reversed)
-#pragma config(Motor,  port8,           right3,        tmotorVex393HighSpeed_MC29, openLoop, reversed)
+#pragma config(Motor,  port3,           left1,         tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port4,           left2,         tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port5,           left3,         tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port6,           right1,        tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port7,           right2,        tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port8,           right3,        tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port9,           liftRight,     tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port10,          flipper,       tmotorVex393_HBridge, openLoop)
 #pragma config(DatalogSeries, 0, "leftEncodeDatalog", Sensors, Sensor, dgtl1, 50)
@@ -75,7 +75,7 @@ clearAll(actOnSensors);
 
 
 task autonomous() {
-	auton();
+
 }
 
 
@@ -112,10 +112,5 @@ while (true) {
 		//Flipper Program
 		flip();
 
-		//intake Program
-		intake();
-
-		//lcd program
-		lcd();
 	}
 }

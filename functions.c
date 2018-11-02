@@ -28,6 +28,11 @@ void driveFunc(int power1, int power2){
 	motor[right3] = power2;
 }
 
+//user control drive function
+void drive(){
+	driveFunc(vexRT[Ch3],vexRT[Ch2]);
+}
+
 //drive forward
 void driveForward(){
 	driveFunc(127,127);
@@ -58,11 +63,6 @@ void liftFunc(int power){
 //Flipper Function
 void flipFunc(int power){
 	motor[flipper]=power;
-}
-
-//Intake Function
-void intakeFunc(int power){
-	motor[intaker]=power;
 }
 
 //user contol lift functions
@@ -118,40 +118,11 @@ void flipStay(){
 void flip(){
 	if (vexRT[Btn5D]==1) {
 		flip1();
-		} else if(vexRT[Btn5D]==1){
+		} else if(vexRT[Btn5U]==1){
 		flip2();
 		} else{
 		flipStay();
 	}
-}
-
-//user control intake functions
-void intake1(){
-	intakeFunc(127);
-}
-
-void intake2(){
-	intakeFunc(-127);
-}
-
-void intakeStay(){
-	intakeFunc(0);
-}
-
-//user control intake program
-void intake(){
-	if(vexRT[Btn5DXmtr2]==1){
-		intake1();
-	} else if(vexRT[Btn5UXmtr2]==1){
-			intake2();
-	} else{
-			intakeStay();
-	}
-}
-
-//user control drive function
-void drive(){
-	driveFunc(vexRT[Ch3],vexRT[Ch2]);
 }
 
 void autonForward(){
