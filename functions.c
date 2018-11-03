@@ -18,7 +18,11 @@ int rightDriveEncode(){
 	return(SensorValue[rightEncoder]);
 }
 
-//Drive Function
+int puncher(){
+	return(SensorValue[puncherEncoder]);
+}
+
+//Drive Function Base Level
 void driveFunc(int power1, int power2){
 	motor[left1] = power1;
 	motor[right1] = power2;
@@ -28,44 +32,45 @@ void driveFunc(int power1, int power2){
 	motor[right3] = power2;
 }
 
-//user control drive function
-void drive(){
-	driveFunc(vexRT[Ch3],vexRT[Ch2]);
-}
-
+//Drive Function Middle Level
 //drive forward
 void driveForward(){
 	driveFunc(127,127);
 }
 
+//drive back
 void driveBack(){
 	driveFunc(-127,-127);
 }
 
+//turn left
 void driveTurnLeft(){
 	driveFunc(-127,127);
 }
 
+//turn right
 void driveTurnRight(){
 	driveFunc(127,-127);
 }
 
+//drive stop
 void driveStop(){
 	driveFunc(0,0);
 }
 
-//Lift Function
+//Drive Top Level
+//drive function
+void drive(){
+	driveFunc(vexRT[Ch3],vexRT[Ch2]);
+}
+
+//Lift Function Base
 void liftFunc(int power){
 	motor[liftLeft] = power;
 	motor[liftRight] = power;
 }
 
-//Flipper Function
-void flipFunc(int power){
-	motor[flipper]=power;
-}
-
-//user contol lift functions
+//Lift Middle Function
 void liftUp(){
 	liftFunc(127);
 }
@@ -74,19 +79,11 @@ void liftDown(){
 	liftFunc(-127);
 }
 
-void liftStayUp(){
-	liftFunc(50);
-}
-
-void liftStayDown(){
-	liftFunc(-50);
-}
-
 void liftStay(){
 	liftFunc(0);
 }
 
-//user contol lift program
+//Lift Top Level
 void lift(){
 	if (vexRT[Btn6D]==1){
 		liftUp();
@@ -101,56 +98,29 @@ void lift(){
 		}
 }
 
-//user control flipper functions
-void flip1(){
-	flipFunc(127);
+//Auton High Level
+void auton(){
+	autonForward();
+	autonTurnLeft();
+	autonBack();
+	autonForward2();
 }
 
-void flip2(){
-	flipFunc(-127);
+//Auton Middle Level
+void autonDriveForward(){
+	driveFunc(127,127);
 }
 
-void flipStay(){
-	flipFunc(0);
+void autonDriveTurnLeft(){
+	driveFunc(-127,127);
 }
 
-//user contol flipper program
-void flip(){
-	if (vexRT[Btn5D]==1) {
-		flip1();
-		} else if(vexRT[Btn5U]==1){
-		flip2();
-		} else{
-		flipStay();
-	}
+void autonDriveTurnRight(){
+	driveFunc(127,-127)
 }
 
-void autonForward(){
-	while((leftDriveEncode()<1500)&&(rightDriveEncode()<1500)){
-		driveForward();
-	}
-	driveStop();
-}
-
-void autonTurnLeft(){
-	while((leftDriveEncode()>-1500)&&(rightDriveEncode()<1500)){
-		driveTurnLeft();
-	}
-	driveStop();
-}
-
-void autonBack(){
-	while((leftDriveEncode()>-1500)&&(rightDriveEncode()>-1500)){
-		driveBack();
-	}
-	driveStop();
-}
-
-void autonForward2(){
-	while((leftDriveEncode()<1500)&&(rightDriveEncode()<1500)){
-		driveForward();
-	}
-	driveStop();
+void autonDriveBack(){
+	driveStop(-127,-127);
 }
 
 //LCD Functions
@@ -181,14 +151,7 @@ void batteryLCD(){
 	clearLCDLine(1);
 }
 
-//here is the entire auton program/functions
-void auton(){
-	autonForward();
-	autonTurnLeft();
-	autonBack();
-	autonForward2();
-}
-
+/*--
 //LCD Functions
 //Wait for Press--------------------------------------------------
 void waitForPress(){
@@ -221,7 +184,8 @@ UART Port 2                    none                                VEX LCD      
 Motor Port 2                rightMotor                    VEX 3-wire module            Right side motor
 Motor Port 3                leftMotor                        VEX 3-wire module            Left side motor
 */
- //lcd variables and functions
+//lcd variables and functions
+/*--
 const short leftButton = 1;
 const short centerButton = 2;
 const short rightButton = 4;
@@ -352,3 +316,4 @@ break;
 }
 //------------- End of Robot Movement Code -----------------------
 }
+--*/

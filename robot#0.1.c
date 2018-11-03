@@ -4,6 +4,7 @@
 #pragma config(Sensor, in2,    rightLiftPotent, sensorNone)
 #pragma config(Sensor, dgtl1,  leftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  rightEncoder,   sensorQuadEncoder)
+#pragma config(Sensor, dgtl5,  puncherEncoder, sensorQuadEncoder)
 #pragma config(Motor,  port1,           puncher,       tmotorVex393_HBridge, openLoop)
 #pragma config(Motor,  port2,           liftLeft,      tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           left1,         tmotorVex393HighSpeed_MC29, openLoop)
@@ -77,7 +78,6 @@ clearAll(actOnSensors);
 task autonomous() {
 
 }
-
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //
