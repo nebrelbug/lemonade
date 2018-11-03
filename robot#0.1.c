@@ -106,11 +106,6 @@ while (true) {
 		//drive program
 		drive();
 
-		//lift program
-		lift();
-
-		//Flipper Program
-		flip();
 
 	}
 }

@@ -18,7 +18,7 @@ int rightDriveEncode(){
 	return(SensorValue[rightEncoder]);
 }
 
-int puncher(){
+int puncherEncode(){
 	return(SensorValue[puncherEncoder]);
 }
 
@@ -100,10 +100,9 @@ void lift(){
 
 //Auton High Level
 void auton(){
-	autonForward();
-	autonTurnLeft();
-	autonBack();
-	autonForward2();
+	autonDriveForward();
+	autonDriveTurnLeft();
+	autonDriveBack();
 }
 
 //Auton Middle Level
@@ -120,7 +119,7 @@ void autonDriveTurnRight(){
 }
 
 void autonDriveBack(){
-	driveStop(-127,-127);
+	driveFunc(-127,-127);
 }
 
 //LCD Functions
