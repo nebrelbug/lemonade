@@ -89,20 +89,9 @@ void lift(){
 		liftUp();
 		} else if (vexRT[Btn6U]==1) {
 			liftDown();
-		} else if(liftPotent()>150){
-			liftStayUp();
-		} else if(liftPotent()<-150){
-			liftStayDown();
 		} else{
 			liftStay();
 		}
-}
-
-//Auton High Level
-void auton(){
-	autonDriveForward();
-	autonDriveTurnLeft();
-	autonDriveBack();
 }
 
 //Auton Middle Level
@@ -120,6 +109,13 @@ void autonDriveTurnRight(){
 
 void autonDriveBack(){
 	driveFunc(-127,-127);
+}
+
+//Auton High Level
+void auton(){
+	autonDriveForward();
+	autonDriveTurnLeft();
+	autonDriveBack();
 }
 
 //LCD Functions
