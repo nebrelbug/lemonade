@@ -5,26 +5,39 @@
 #pragma userControlDuration(105)
 
 //Auton Middle Level
-void autonDriveForward(){
+//drive functions
+//drive forward
+void driveForward(int time){
 	driveFunc(127,127);
+	waitFunc(time);
+	driveStop();
 }
 
-void autonDriveTurnLeft(){
-	driveFunc(-127,127);
-}
-
-void autonDriveTurnRight(){
-	driveFunc(127,-127);
-}
-
-void autonDriveBack(){
+//drive back
+void driveBack(int time){
 	driveFunc(-127,-127);
+	waitFunc(time);
+	driveStop();
+}
+
+//turn left
+void driveTurnLeft(int time){
+	driveFunc(-127,127);
+	waitFunc(time);
+	driveStop();
+}
+
+//turn right
+void driveTurnRight(int time){
+	driveFunc(127,-127);
+	waitFunc(time);
+	driveStop();
 }
 
 
 //Auton High Level
 void auton(){
-	autonDriveForward();
-	autonDriveTurnLeft();
-	autonDriveBack();
+	driveForward(1000);
+	driveTurnLeft(500);
+	driveBack(1000);
 }
