@@ -89,9 +89,20 @@ void lift(){
 		liftUp();
 		} else if (vexRT[Btn6U]==1) {
 			liftDown();
+		} else if(liftPotent()>150){
+			liftStayUp();
+		} else if(liftPotent()<-150){
+			liftStayDown();
 		} else{
 			liftStay();
 		}
+}
+
+//Auton High Level
+void auton(){
+	autonDriveForward();
+	autonDriveTurnLeft();
+	autonDriveBack();
 }
 
 //Auton Middle Level
@@ -109,13 +120,6 @@ void autonDriveTurnRight(){
 
 void autonDriveBack(){
 	driveFunc(-127,-127);
-}
-
-//Auton High Level
-void auton(){
-	autonDriveForward();
-	autonDriveTurnLeft();
-	autonDriveBack();
 }
 
 //LCD Functions
@@ -154,14 +158,12 @@ void waitForPress(){
 	wait1Msec(5);
 }
 //----------------------------------------------------------------
-
 //Wait for Release------------------------------------------------
 void waitForRelease() {
 	while(nLCDButtons != 0){}
 	wait1Msec(5);
 }
 //----------------------------------------------------------------
-
 void lcd(){
 	/*
 Code Chooser
@@ -184,7 +186,6 @@ Motor Port 3                leftMotor                        VEX 3-wire module  
 const short leftButton = 1;
 const short centerButton = 2;
 const short rightButton = 4;
-
 //Declare count variable to keep track of our choice
 int count = 0;
 //------------- Beginning of User Interface Code ---------------
@@ -261,7 +262,6 @@ int count = 0;
 		}
 	}
 //------------- End of User Interface Code ---------------------
-
 //------------- Beginning of Robot Movement Code ---------------
 //Clear LCD
 clearLCDLine(0);
@@ -273,17 +273,14 @@ case 0:
 displayLCDCenteredString(0, "Autonomous 1");
 displayLCDCenteredString(1, "is running!");
 wait1Msec(2000);                        // Robot waits for 2000 milliseconds
-
 // Move forward at full power for 3 seconds
 //Ends before moving on
-
 break;
 case 1:
 //If count = 1, run the code correspoinding with choice 2
 displayLCDCenteredString(0, "Autonomous 2");
 displayLCDCenteredString(1, "is running!");
 wait1Msec(2000);                        // Robot waits for 2000 milliseconds
-
 //robot call void Red
 break;
 case 2:
@@ -291,18 +288,14 @@ case 2:
 displayLCDCenteredString(0, "Autonomous 3");
 displayLCDCenteredString(1, "is running!");
 wait1Msec(2000);                        // Robot waits for 2000 milliseconds
-
 //Robot call Void Blue
-
 break;
 case 3:
 //If count = 3, run the code correspoinding with choice 4
 displayLCDCenteredString(0, "Autonomous 4");
 displayLCDCenteredString(1, "is running!");
 wait1Msec(2000);                        // Robot waits for 2000 milliseconds
-
 //auton function call void 4
-
 break;
 default:
 displayLCDCenteredString(0, "No valid choice");
