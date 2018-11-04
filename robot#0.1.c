@@ -39,6 +39,7 @@
 #pragma autonomousDuration(15)
 #pragma userControlDuration(105)
 
+#include "variables.c"
 #include "Vex_Competition_Includes.c" //Main competition background code...do not modify!
 #include "functions.c"
 
