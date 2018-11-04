@@ -60,7 +60,6 @@ bStopTasksBetweenModes = true;
 
 // All activities that occur before the competition starts
 // Example: clearing encoders, setting servo positions, ...
-batteryLCD();
 clearAll(actOnSensors);
 }
 
