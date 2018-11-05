@@ -20,19 +20,7 @@ void driveStop(){
 	driveFunc(0,0);
 }
 
-//Drive Top Level
-void driveStraight(){
-	if(rightMleft()>100){
-		leftPowerM();
-	} else if(rightMleft()<-100){
-			rightPowerM();
-	} else{
-			rightPower=100;
-			leftPower=100;
-	}
-}
-
 void drive(){
-	driveStraight();
+	startTask(driveStraight);
 	driveFunc(vexRT[Ch3],vexRT[Ch2]);
 }
