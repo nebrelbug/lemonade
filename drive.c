@@ -6,12 +6,12 @@
 
 //Drive Function Base Level
 void driveFunc(int power1, int power2){
-	SetMotor(left1,driveLeftChange(power1));
-	SetMotor(right1,driveRightChange(power2));
-	SetMotor(left2,driveLeftChange(power1));
-	SetMotor(right2,driveRightChange(power2));
-	SetMotor(left3,driveLeftChange(power1));
-	SetMotor(right3,driveRightChange(power2));
+	SetMotor(left1,(power1));
+	SetMotor(right1,(power2));
+	SetMotor(left2,(power1));
+	SetMotor(right2,(power2));
+	SetMotor(left3,(power1));
+	SetMotor(right3,(power2));
 }
 
 //Drive Function Middle Level
@@ -20,7 +20,7 @@ void driveStop(){
 	driveFunc(0,0);
 }
 
+//Drive Function High Level
 void drive(){
-	startTask(driveStraight);
 	driveFunc(vexRT[Ch3],vexRT[Ch2]);
 }
