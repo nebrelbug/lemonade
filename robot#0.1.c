@@ -141,5 +141,7 @@ while (true) {
 		//puncher
 		puncher();
 
+		//intake
+		intaking();
 	}
 }
