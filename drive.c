@@ -6,19 +6,15 @@
 
 //Drive Function Base Level
 void driveFunc(int power1, int power2){
-	SetMotor(left1,(power1));
-	SetMotor(right1,(power2));
-	SetMotor(left2,(power1));
-	SetMotor(right2,(power2));
-	SetMotor(left3,(power1));
-	SetMotor(right3,(power2));
+	setMotor(left1,(power1));
+	setMotor(right1,(power2));
+	setMotor(left2,(power1));
+	setMotor(right2,(power2));
+	setMotor(left3,(power1));
+	setMotor(right3,(power2));
 }
 
-//Drive Function Middle Level
-//drive stop
-void driveStop(){
-	driveFunc(0,0);
-}
+
 
 //Drive Function High Level
 void drive(){

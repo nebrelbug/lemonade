@@ -10,15 +10,11 @@ void waitFunc(int time){
 
 //ints
 int leftDriveEncode(){
-	return(SensorValue[leftEncoder]);
+	return(SensorValue[leftEncoder]*-1);
 }
 
 int rightDriveEncode(){
 	return(SensorValue[rightEncoder]);
-}
-
-int puncherEncode(){
-	return(SensorValue[puncherEncoder]);
 }
 
 //PID

@@ -6,8 +6,8 @@
 
 //Drive Function Base Level
 void puncherFunc(int power){
-	SetMotor(puncher1, power);
-	SetMotor(puncher2, power);
+	motor[puncher1]=power;
+	motor[puncher2]=power;
 }
 
 //Drive Function Middle Level
@@ -21,7 +21,7 @@ void puncherForward(){
 }
 
 void puncher(){
-	if(vexRT[Btn5D]==1){
+	if(vexRT[Btn5U]==1){
 		puncherForward();
 	} else{
 			puncherStop();

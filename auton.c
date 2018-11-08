@@ -6,15 +6,28 @@
 
 //Auton Middle Level
 //drive functions
+//Drive Function Middle Level
+//drive stop
+void driveStop(){
+	driveFunc(0,0);
+}
+
+void driveForward(){
+	driveFunc(127,127);
+}
+
 //drive forward
-void driveForward(int time){
-	driveForwardPID(1000);
-	waitFunc(time);
-	driveStop();
+void driveForwardNormal(){
+	while(leftDriveEncode()<1300){
+		if(rightDriveEncode()<1300){
+			driveForward();
+		} else
+			driveStop();
+	}
 }
 
 
 //Auton High Level
 void auton(){
-	wait1Msec(100);
+	driveForwardNormal();
 }
