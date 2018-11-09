@@ -8,15 +8,6 @@ void waitFunc(int time){
 	wait1Msec(time);
 }
 
-//ints
-int leftDriveEncode(){
-	return(SensorValue[leftEncoder]*-1);
-}
-
-int rightDriveEncode(){
-	return(SensorValue[rightEncoder]);
-}
-
 //PID
 //Drive Top Level
 

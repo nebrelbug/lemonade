@@ -9,7 +9,7 @@ void intakeFunc(int power){
 	SetMotor(intake, power);
 }
 
-//Drive Function Middle Level
+//Drive Function Middle intake
 //drive stop
 void intakeStop(){
 	intakeFunc(0);
@@ -28,7 +28,6 @@ void intaking(){
 		intakeForward();
 	} else if(vexRT[Btn6D]==1){
 			intakeBackward();
-	}else{
+	}else
 			intakeStop();
-	}
 }

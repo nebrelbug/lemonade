@@ -4,6 +4,17 @@
 #pragma autonomousDuration(15)
 #pragma userControlDuration(105)
 
+
+
+//ints
+int leftDriveEncode(){
+	return(SensorValue[leftEncoder]*-1);
+}
+
+int rightDriveEncode(){
+	return(SensorValue[rightEncoder]);
+}
+
 //Auton Middle Level
 //drive functions
 //Drive Function Middle Level
