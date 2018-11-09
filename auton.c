@@ -15,7 +15,7 @@ int rightDriveEncode(){
 	return(SensorValue[rightEncoder]);
 }
 
-//Auton Middle Level
+//Auton Mddle Level
 //drive functions
 //Drive Function Middle Level
 //drive stop

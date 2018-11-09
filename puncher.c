@@ -10,7 +10,7 @@ void puncherFunc(int power){
 	motor[puncher2]=power;
 }
 
-//Drive Function Middle Level
+//Dive Function Middle Level
 //drive stop
 void puncherStop(){
 	puncherFunc(0);

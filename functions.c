@@ -3,7 +3,7 @@
 #pragma autonomousDuration(15)
 #pragma userControlDuration(105)
 
-//after variables
+//after variable
 #include "ints.c"
 
 //after ints
