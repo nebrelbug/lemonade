@@ -8,9 +8,9 @@
 #pragma config(Sensor, dgtl7,  intakeEncoder,  sensorQuadEncoder)
 #pragma config(Motor,  port1,           flipper,       tmotorVex393HighSpeed_HBridge, openLoop)
 #pragma config(Motor,  port2,           puncher1,      tmotorVex393_MC29, openLoop)
-#pragma config(Motor,  port3,           left1,         tmotorVex393HighSpeed_MC29, PIDControl, reversed, driveLeft, encoderPort, dgtl1)
-#pragma config(Motor,  port4,           left2,         tmotorVex393HighSpeed_MC29, PIDControl, reversed, driveLeft, encoderPort, dgtl1)
-#pragma config(Motor,  port5,           left3,         tmotorVex393HighSpeed_MC29, PIDControl, reversed, driveLeft, encoderPort, dgtl1)
+#pragma config(Motor,  port3,           left1,         tmotorVex393HighSpeed_MC29, PIDControl, driveLeft, encoderPort, dgtl1)
+#pragma config(Motor,  port4,           left2,         tmotorVex393HighSpeed_MC29, PIDControl, driveLeft, encoderPort, dgtl1)
+#pragma config(Motor,  port5,           left3,         tmotorVex393HighSpeed_MC29, PIDControl, driveLeft, encoderPort, dgtl1)
 #pragma config(Motor,  port6,           right1,        tmotorVex393HighSpeed_MC29, PIDControl, reversed, driveRight, encoderPort, dgtl3)
 #pragma config(Motor,  port7,           right2,        tmotorVex393HighSpeed_MC29, PIDControl, reversed, driveRight, encoderPort, dgtl3)
 #pragma config(Motor,  port8,           right3,        tmotorVex393HighSpeed_MC29, PIDControl, reversed, driveRight, encoderPort, dgtl3)
@@ -131,18 +131,9 @@ task usercontrol() {
 //
 /////////////////////////////////////////////////////////////////////////////////////////
 
-while (true) {
+while(true){
 // This is the main execution loop for the user control program. Each time through the loop
 // your program should update motor + servo values based on feedback from the joysticks.
-
-		//drive program
-		drive();
-
-		//puncher
-		puncher();
-
-		//intake
-		intaking();
-
+		auton();
 	}
 }

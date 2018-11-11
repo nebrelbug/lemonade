@@ -27,7 +27,7 @@ task pidController(){
  float  pidDrive;
 
  // If we are using an encoder then clear it
- if( SensorType[ PID_SENSOR_INDEX ] == sensorQuadEncoder )
+ if(SensorType[leftEncoder] == sensorQuadEncoder )
    SensorValue[ PID_SENSOR_INDEX ] = 0;
 
   	// Init the variables - thanks Glenn :)
@@ -68,14 +68,14 @@ task pidController(){
           pidDrive = PID_DRIVE_MIN;
 
             // send to motor
-           motor[ PID_MOTOR_INDEX ] = pidDrive * PID_MOTOR_SCALE;
+           	leftDriveFunc(pidDrive * PID_MOTOR_SCALE, );
     }else{
        // clear all
        pidError      = 0;
        pidLastError  = 0;
        pidIntegral   = 0;
        pidDerivative = 0;
-       motor[ PID_MOTOR_INDEX ] = 0;
+       leftDriveFunc(0);
      }
 
     // Run at 50Hz
@@ -100,8 +100,6 @@ void driveForwardPID(int clicks){
   	// maximum change for pidRequestedValue will be 127/4*20, around 640 counts per second
   	// free spinning motor is 100rmp so 1.67 rotations per second
 		// 1.67 * 360 counts is 600
-
-  	pidRequestedValue = pidRequestedValue + (vexRT[ Ch2 ]/4);
 
   	wait1Msec(50);
   }

@@ -12,7 +12,6 @@
 #define PID_SENSOR_INDEX    leftEncoder
 #define PID_SENSOR_SCALE    1
 
-#define PID_MOTOR_INDEX     left1
 #define PID_MOTOR_SCALE     -1
 
 #define PID_DRIVE_MAX       80

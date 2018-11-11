@@ -4,14 +4,31 @@
 #pragma autonomousDuration(15)
 #pragma userControlDuration(105)
 
+//sensor encoders int
+int leftEncode(){
+	return(SensorValue[leftEncoder]);
+}
+
+int rightEncode(){
+	return(SensorValue[rightEncoder]);
+}
+
 //Drive Function Base Level
+void leftDriveFunc(int power){
+	SetMotor(left1,  power);
+	SetMotor(left2,  power);
+	SetMotor(left3,  power);
+}
+
+void rightDriveFunc(int power){
+	SetMotor(right1, power);
+	SetMotor(right2, power);
+	SetMotor(right3, power);
+}
+
 void driveFunc(int power1, int power2){
-	SetMotor(left1,  power1);
-	SetMotor(right1, power2);
-	SetMotor(left2,  power1);
-	SetMotor(right2, power2);
-	SetMotor(left3,  power1);
-	SetMotor(right3, power2);
+	leftDriveFunc(power1);
+	rightDriveFunc(power2);
 }
 
 int driveJoystick(int input){

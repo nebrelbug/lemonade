@@ -40,5 +40,5 @@ void driveForwardNormal(){
 
 //Auton High Level
 void auton(){
-	driveForwardNormal();
+	driveForwardPID(-350);
 }
