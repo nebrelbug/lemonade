@@ -9,7 +9,8 @@
 #include "intake.c"
 
 //file that is really called PID
-#include "ints.c"
+#include "leftPID.c"
+#include "rightPID.c"
 
 //after drivercontrol
 #include "auton.c"

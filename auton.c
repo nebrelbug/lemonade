@@ -15,30 +15,24 @@ int rightDriveEncode(){
 	return(SensorValue[rightEncoder]);
 }
 
+//drive PID
+void drivePID(int power1, int power2){
+	rightDrivePID(power2);
+	leftDrivePID(power1);
+}
+
 //Auton Mddle Level
 //drive functions
 //Drive Function Middle Level
-//drive stop
+void driveStraight(int power){
+	drivePID(power,power);
+}
+
 void driveStop(){
-	driveFunc(0,0);
+	drivePID(0,0)
 }
-
-void driveForward(){
-	driveFunc(127,127);
-}
-
-//drive forward
-void driveForwardNormal(){
-	while(leftDriveEncode()<1300){
-		if(rightDriveEncode()<1300){
-			driveForward();
-		} else
-			driveStop();
-	}
-}
-
 
 //Auton High Level
 void auton(){
-	driveForwardPID(-350);
+	rightDrivePID(-100);
 }

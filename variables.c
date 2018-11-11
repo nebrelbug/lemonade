@@ -9,8 +9,9 @@
 // Shaft encoder has 360 pulses per revolution
 //
 
-#define PID_SENSOR_INDEX    leftEncoder
-#define PID_SENSOR_SCALE    1
+#define LEFT_SENSOR_INDEX    leftEncoder
+#define RIGHT_SENSOR_INDEX   rightEncoder
+#define PID_SENSOR_SCALE     1
 
 #define PID_MOTOR_SCALE     -1
 
@@ -27,3 +28,8 @@ float  pid_Kd = 0.0;
 
 static int   pidRunning = 1;
 static float pidRequestedValue;
+
+//delay void
+void waitFunc(int time){
+	wait1Msec(time);
+}

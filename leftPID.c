@@ -1,23 +1,23 @@
+
 #pragma platform(VEX)
 #pragma competitionControl(Competition)
 #pragma autonomousDuration(15)
 #pragma userControlDuration(105)
 
-//delay void
-void waitFunc(int time){
-	wait1Msec(time);
-}
 
 //PID
 //Drive Top Level
 
 /*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*  pid control task                                                           */
-/*                                                                             */
+/*
+*/
+/*  pid control task
+*/
+/*
+*/
 /*-----------------------------------------------------------------------------*/
 
-task pidController(){
+task leftPIDController(){
 
  float  pidSensorCurrentValue;
  float  pidError;
@@ -27,8 +27,8 @@ task pidController(){
  float  pidDrive;
 
  // If we are using an encoder then clear it
- if(SensorType[leftEncoder] == sensorQuadEncoder )
-   SensorValue[ PID_SENSOR_INDEX ] = 0;
+ if(SensorType[ LEFT_SENSOR_INDEX ] == sensorQuadEncoder )
+   SensorValue[ LEFT_SENSOR_INDEX ] = 0;
 
   	// Init the variables - thanks Glenn :)
   pidLastError  = 0;
@@ -38,7 +38,8 @@ task pidController(){
     // Is PID control active ?
     if( pidRunning ){
       // Read the sensor value and scale
-      pidSensorCurrentValue = SensorValue[ PID_SENSOR_INDEX ] * PID_SENSOR_SCALE;
+      pidSensorCurrentValue = SensorValue[ LEFT_SENSOR_INDEX ] *
+PID_SENSOR_SCALE;
 
       // calculate error
       pidError = pidSensorCurrentValue - pidRequestedValue;
@@ -59,7 +60,8 @@ task pidController(){
         pidLastError  = pidError;
 
         // calculate drive
-        pidDrive = (pid_Kp * pidError) + (pid_Ki * pidIntegral) + (pid_Kd * pidDerivative);
+        pidDrive = (pid_Kp * pidError) + (pid_Ki * pidIntegral) +
+(pid_Kd * pidDerivative);
 
         // limit drive
         if( pidDrive > PID_DRIVE_MAX )
@@ -68,14 +70,14 @@ task pidController(){
           pidDrive = PID_DRIVE_MIN;
 
             // send to motor
-           	leftDriveFunc(pidDrive * PID_MOTOR_SCALE, );
+           	driveFunc(pidDrive * PID_MOTOR_SCALE, pidDrive* PID_MOTOR_SCALE);
     }else{
        // clear all
        pidError      = 0;
        pidLastError  = 0;
        pidIntegral   = 0;
        pidDerivative = 0;
-       leftDriveFunc(0);
+       driveFunc(0,0);
      }
 
     // Run at 50Hz
@@ -84,16 +86,19 @@ task pidController(){
 }
 
 /*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*  main task                                                                  */
-/*                                                                             */
+/*
+*/
+/*  main task
+*/
+/*
+*/
 /*-----------------------------------------------------------------------------*/
 
-void driveForwardPID(int clicks){
+void leftDrivePID(int clicks){
 	// send the motor off somewhere
   pidRequestedValue = clicks;
 	// start the PID task
-  startTask( pidController );
+  startTask( leftPIDController );
 
   // use joystick to modify the requested position
   while( true ){
