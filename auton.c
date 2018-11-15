@@ -34,5 +34,5 @@ void driveStop(){
 
 //Auton High Level
 void auton(){
-	rightDrivePID(-100);
+	driveStraight(127);
 }

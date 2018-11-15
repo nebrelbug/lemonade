@@ -7,6 +7,7 @@
 #include "drive.c"
 #include "puncher.c"
 #include "intake.c"
+#include "pneumatics.c"
 
 //file that is really called PID
 #include "leftPID.c"
