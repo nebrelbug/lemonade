@@ -1,4 +1,5 @@
 #pragma config(UART_Usage, UART1, uartVEXLCD, baudRate19200, IOPins, None, None)
+#pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
 #pragma config(Sensor, in1,    leftLiftPotent, sensorPotentiometer)
 #pragma config(Sensor, in2,    rightLiftPotent, sensorPotentiometer)
 #pragma config(Sensor, dgtl1,  leftEncoder,    sensorQuadEncoder)
@@ -12,7 +13,7 @@
 #pragma config(Motor,  port5,           left3,         tmotorVex393HighSpeed_MC29, PIDControl, driveLeft, encoderPort, dgtl1)
 #pragma config(Motor,  port6,           right1,        tmotorVex393HighSpeed_MC29, PIDControl, driveRight, encoderPort, dgtl3)
 #pragma config(Motor,  port7,           right2,        tmotorVex393HighSpeed_MC29, PIDControl, driveRight, encoderPort, dgtl3)
-#pragma config(Motor,  port8,           right3,        tmotorVex393HighSpeed_MC29, openLoop)
+#pragma config(Motor,  port8,           right3,        tmotorVex393HighSpeed_MC29, PIDControl, driveRight, encoderPort, dgtl3)
 #pragma config(Motor,  port9,           puncher2,      tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port10,          intake,        tmotorVex393HighSpeed_HBridge, openLoop)
 #pragma config(DatalogSeries, 0, "leftEncodeDatalog", Sensors, Sensor, dgtl1, 50)
@@ -37,6 +38,7 @@
 #pragma config(Motor,  port6,           flyWheel2,     tmotorVex393HighSpeed_MC29, openLoop)
 --*/
 #include "jpearman/SmartMotorLib.c"
+#include "lcdCodeChooserEx.c"
 
 #pragma platform(VEX)
 
@@ -105,7 +107,7 @@ void pre_auton(){
 
 
 task autonomous() {
-	auton();
+	startTask(auton());
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
