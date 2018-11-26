@@ -64,6 +64,8 @@ void pre_auton(){
 	// Set bStopTasksBetweenModes to false if you want to keep user created tasks running between
 	// Autonomous and Tele-Op modes. You will need to manage all user created tasks if set to false.
 	bStopTasksBetweenModes = false;
+	bLCDBacklight = true;									// Turn on LCD Backlight
+
 
 	// All activities that occur before the competition starts
 	// Example: clearing encoders, setting servo positions, ...
@@ -147,6 +149,7 @@ task usercontrol() {
 		drive();
 		intaking();
 		puncher();
+		lcd();
 
 		//wait so that there is a slight delay for the cpu to catch up
 		wait1Msec(20);

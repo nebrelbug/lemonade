@@ -6,15 +6,11 @@
 //after ints
 //sensor encoders int
 int leftEncode(){
-	string value;
-	value = SensorValue[leftEncoder];
-	return(value);
+	return(SensorValue[leftEncoder]);
 }
 
 int rightEncode(){
-	string value;
-	value = SensorValue[rightEncoder];
-	return(value);
+	return(SensorValue[rightEncoder]);
 }
 
 void driveFunc(int power1, int power2){
@@ -91,26 +87,39 @@ void clearLCD(){
 	clearLCDLine(1);
 }
 
+void lcdClear(){
+	clearLCDLine(0);
+	clearLCDLine(1);
+}
+
 //lcd driver control
 int lcdToggle;
 
 void lcd(){
 	clearLCD();
-	wait1Msec(20);
+	waitFunc(20);
 	if(lcdToggle ==1){
-		displayLCDCenteredString(0, stringConcatenate("Left Side: ",leftEncode));
-		displayLCDCenteredString(1, stringConcatenate("Right Side: ",rightEncode);
-		lcdToggle=0;
-	}/*--else(lcdToggle =0){
+		// Top LCD Line Display Stuff:
+    displayLCDPos(0,0);
+    displayNextLCDString("R Enc ");
+    displayNextLCDNumber(rightEncode());
+		displayNextLCDString("PWM ");
+		displayNextLCDNumber(vexRT[Ch3]);
+
+		displayLCDPos(1,0);
+    displayNextLCDString("L Enc ");
+    displayNextLCDNumber(leftEncode());
+		displayNextLCDString("PWM ");
+		displayNextLCDNumber(vexRT[Ch2]);
+	}
+}/*--else(lcdToggle =0){
 		displayLCDCenteredString(0, stringConcatenate("Left Side: ",leftEncode));
 		displayLCDCenteredString(1, stringConcatenate("Right Side: ",rightEncode);
 		lcdToggle=1;
 	}--*/
-}
+
 
 //void lcd display voltage
-
-
 void lcdBattery(){
 
 		clearLCD();

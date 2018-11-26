@@ -34,5 +34,4 @@ void waitFunc(int time){
 	wait1Msec(time);
 }
 
-bLCDBacklight = true;									// Turn on LCD Backlight
 string mainBattery, backupBattery;
