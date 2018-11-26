@@ -81,6 +81,18 @@ void intaking(){
 
 //pneumatics
 
+//lcd clear
+void lcdClear(){
+	clearLCDLine(0);
+	clearLCDLine(1);
+}
+
+//lcd set centered string
+
+//lcd driver control
+void lcd(){
+
+}
 
 //file that is really called PID
 #include "rightPID.c"

@@ -1,6 +1,5 @@
 #pragma config(UART_Usage, UART1, uartVEXLCD, baudRate19200, IOPins, None, None)
-#pragma config(UART_Usage, UART2, uartNotUsed, baudRate4800, IOPins, None, None)
-#pragma config(Sensor, in1,    leftLiftPotent, sensorPotentiometer)
+#pragma config(Sensor, in1,    leftLiftPotent, sensorNone)
 #pragma config(Sensor, in2,    rightLiftPotent, sensorPotentiometer)
 #pragma config(Sensor, dgtl1,  leftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  rightEncoder,   sensorQuadEncoder)
@@ -38,7 +37,6 @@
 #pragma config(Motor,  port6,           flyWheel2,     tmotorVex393HighSpeed_MC29, openLoop)
 --*/
 #include "jpearman/SmartMotorLib.c"
-#include "lcdCodeChooserEx.c"
 
 #pragma platform(VEX)
 
@@ -50,6 +48,8 @@
 #pragma systemFile
 #include "variables.c"
 #include "functions.c"
+#include "lcdCodeChooserEx.c"
+
 
 /////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -107,7 +107,7 @@ void pre_auton(){
 
 
 task autonomous() {
-	startTask(auton());
+	lcdAuton();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -123,7 +123,11 @@ task autonomous() {
 //hi
 task usercontrol() {
 	// User control code here, inside the loop
+	lcdClear();
+	displayLCDCenteredString(0,"What's Up");
+	displayLCDCenteredString(1,"initilizing");
 
+	wait1Msec(500);
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Variable Declarations
@@ -134,7 +138,7 @@ task usercontrol() {
 		// This is the main execution loop for the user control program. Each time through the loop
 		// your program should update motor + servo values based on feedback from the joysticks.
 		drive();
-		puncher();
 		intaking();
+		puncher();
 	}
 }

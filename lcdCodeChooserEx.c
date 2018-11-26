@@ -40,7 +40,7 @@ void waitForRelease()
 }
 //----------------------------------------------------------------
 
-task auton()
+void lcdAuton()
 {
 	//Declare count variable to keep track of our choice
 	int count = 0;
@@ -142,9 +142,10 @@ task auton()
 		wait1Msec(2000);						// Robot waits for 2000 milliseconds
 
 		// Move forward at full power for 3 seconds
-		motor[left1] = 127;			// Motor on port2 is run at full (127) power forward
-		motor[right1]	= 127;			// Motor on port3 is run at full (127) power forward
-		wait1Msec(3000);							// Robot runs previous code for 3000 milliseconds before moving on
+		drive();
+		puncher();
+		intaking();
+		wait1Msec(5);							// Robot runs previous code for 3000 milliseconds before moving on
 		break;
 	case 1:
 		//If count = 1, run the code correspoinding with choice 2
@@ -153,9 +154,7 @@ task auton()
 		wait1Msec(2000);						// Robot waits for 2000 milliseconds
 
 		// Move reverse at full power for 3 seconds
-		motor[right1] = -127;			// Motor on port2 is run at full (-127) power reverse
-		motor[left1]	= -127;			// Motor on port3 is run at full (-127) power reverse
-		wait1Msec(3000);							// Robot runs previous code for 3000 milliseconds before moving on
+		drive();
 		break;
 	case 2:
 		//If count = 2, run the code correspoinding with choice 3
@@ -164,9 +163,7 @@ task auton()
 		wait1Msec(2000);						// Robot waits for 2000 milliseconds
 
 		//Turn right for 3 seconds
-		motor[right1] = -63;			// Motor on port2 is run at half power reverse
-		motor[left1]	= 63;				// Motor on port3 is run at half power forward
-		wait1Msec(3000);							// Robot runs previous code for 3000 milliseconds before moving on
+		puncher();
 		break;
 	case 3:
 		//If count = 3, run the code correspoinding with choice 4
@@ -175,9 +172,7 @@ task auton()
 		wait1Msec(2000);						// Robot waits for 2000 milliseconds
 
 		//Turn left for 3 seconds
-		motor[right1] = 63;				// Motor on port2 is run at half power forward
-		motor[left1]	= -63;			// Motor on port3 is run at half power reverse
-		wait1Msec(3000);							// Robot runs previous code for 3000 milliseconds before moving on
+		intaking();
 		break;
 	default:
 		displayLCDCenteredString(0, "No valid choice");
