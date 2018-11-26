@@ -87,38 +87,6 @@ void clearLCD(){
 	clearLCDLine(1);
 }
 
-void lcdClear(){
-	clearLCDLine(0);
-	clearLCDLine(1);
-}
-
-//lcd driver control
-int lcdToggle;
-
-void lcd(){
-	clearLCD();
-	waitFunc(20);
-	if(lcdToggle ==1){
-		// Top LCD Line Display Stuff:
-    displayLCDPos(0,0);
-    displayNextLCDString("R Enc ");
-    displayNextLCDNumber(rightEncode());
-		displayNextLCDString("PWM ");
-		displayNextLCDNumber(vexRT[Ch3]);
-
-		displayLCDPos(1,0);
-    displayNextLCDString("L Enc ");
-    displayNextLCDNumber(leftEncode());
-		displayNextLCDString("PWM ");
-		displayNextLCDNumber(vexRT[Ch2]);
-	}
-}/*--else(lcdToggle =0){
-		displayLCDCenteredString(0, stringConcatenate("Left Side: ",leftEncode));
-		displayLCDCenteredString(1, stringConcatenate("Right Side: ",rightEncode);
-		lcdToggle=1;
-	}--*/
-
-
 //void lcd display voltage
 void lcdBattery(){
 
@@ -138,6 +106,46 @@ void lcdBattery(){
 		wait1Msec(100);
 
 }
+
+//lcd driver control
+task lcd(){
+	displayLCDCenteredString(0,"--INITIALIZING--");
+	displayLCDCenteredString(1,"--USER CONTROL--");
+	delayFunc(500);
+	clearLCD();
+	while(true){
+		lcdBattery();
+
+		delayFunc(3000);
+
+		clearLCD();
+
+    displayLCDPos(0,0);
+  	displayNextLCDString("Right Encode: ");
+	 	displayNextLCDNumber(rightEncode());
+		displayLCDPos(1,0);
+		displayNextLCDString("Left Encode:  ");
+		displayNextLCDNumber(leftEncode());
+	  delayFunc(3000);
+
+		clearLCD();
+
+		displayLCDPos(0,0);
+		displayNextLCDString("Right PWM: ");
+		displayNextLCDNumber(vexRT[Ch3]);
+		displayLCDPos(1,0);
+		displayNextLCDString("Left PWM: ");
+		displayNextLCDNumber(vexRT[Ch2]);
+		delayFunc(3000);
+
+		clearLCD();
+	}
+}/*--else(lcdToggle =0){
+		displayLCDCenteredString(0, stringConcatenate("Left Side: ",leftEncode));
+		displayLCDCenteredString(1, stringConcatenate("Right Side: ",rightEncode);
+		lcdToggle=1;
+	}--*/
+
 
 //file that is really called PID
 #include "rightPID.c"

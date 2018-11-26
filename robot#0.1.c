@@ -125,31 +125,22 @@ task autonomous() {
 //hi
 task usercontrol() {
 	// User control code here, inside the loop
-	lcdBattery();
 
-	wait1Msec(500);
-
-	lcdClear();
-
-	displayLCDCenteredString(0,"--INITIALIZING--");
-	displayLCDCenteredString(1,"--USER CONTROL--");
-
-	wait1Msec(20);
 	/////////////////////////////////////////////////////////////////////////////////////////
 	//
 	// Variable Declarations
 	//
 	/////////////////////////////////////////////////////////////////////////////////////////
 
+	startTask(lcd);
+
 	while(true){
 		// This is the main execution loop for the user control program. Each time through the loop
 		// your program should update motor + servo values based on feedback from the joysticks.
-
 		//functions
 		drive();
 		intaking();
 		puncher();
-		lcd();
 
 		//wait so that there is a slight delay for the cpu to catch up
 		wait1Msec(20);

@@ -30,6 +30,10 @@ static int   pidRunning = 1;
 static float pidRequestedValue;
 
 //delay void
+void delayFunc(int time){
+	wait1Msec(time);
+}
+
 void waitFunc(int time){
 	wait1Msec(time);
 }
