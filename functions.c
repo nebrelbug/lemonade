@@ -82,7 +82,7 @@ void intaking(){
 //pneumatics
 
 //lcd clear
-void lcdClear(){
+void clearLCD(){
 	clearLCDLine(0);
 	clearLCDLine(1);
 }
