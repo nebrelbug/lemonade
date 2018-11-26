@@ -6,11 +6,15 @@
 //after ints
 //sensor encoders int
 int leftEncode(){
-	return(SensorValue[leftEncoder]);
+	string value;
+	value = SensorValue[leftEncoder];
+	return(value);
 }
 
 int rightEncode(){
-	return(SensorValue[rightEncoder]);
+	string value;
+	value = SensorValue[rightEncoder];
+	return(value);
 }
 
 void driveFunc(int power1, int power2){
@@ -87,10 +91,42 @@ void clearLCD(){
 	clearLCDLine(1);
 }
 
-//lcd set centered string
-
 //lcd driver control
+int lcdToggle;
+
 void lcd(){
+	clearLCD();
+	wait1Msec(20);
+	if(lcdToggle ==1){
+		displayLCDCenteredString(0, stringConcatenate("Left Side: ",leftEncode));
+		displayLCDCenteredString(1, stringConcatenate("Right Side: ",rightEncode);
+		lcdToggle=0;
+	}/*--else(lcdToggle =0){
+		displayLCDCenteredString(0, stringConcatenate("Left Side: ",leftEncode));
+		displayLCDCenteredString(1, stringConcatenate("Right Side: ",rightEncode);
+		lcdToggle=1;
+	}--*/
+}
+
+//void lcd display voltage
+
+
+void lcdBattery(){
+
+		clearLCD();
+
+		//Display the Primary Robot battery voltage
+		displayLCDString(0, 0, "Primary: ");
+		sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0,'V'); //Build the value to be displayed
+		displayNextLCDString(mainBattery);
+
+		//Display the Backup battery voltage
+		displayLCDString(1, 0, "Backup: ");
+		sprintf(backupBattery, "%1.2f%c", BackupBatteryLevel/1000.0, 'V');	//Build the value to be displayed
+		displayNextLCDString(backupBattery);
+
+		//Short delay for the LCD refresh rate
+		wait1Msec(100);
 
 }
 

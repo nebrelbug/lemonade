@@ -123,7 +123,12 @@ task autonomous() {
 //hi
 task usercontrol() {
 	// User control code here, inside the loop
+	lcdBattery();
+
+	wait1Msec(500);
+
 	lcdClear();
+
 	displayLCDCenteredString(0,"--INITIALIZING--");
 	displayLCDCenteredString(1,"--USER CONTROL--");
 
@@ -134,17 +139,9 @@ task usercontrol() {
 	//
 	/////////////////////////////////////////////////////////////////////////////////////////
 
-	int betweenTime;
-	int lastTime=0;
-	int time;
-	int lcdCycle=0;
-
 	while(true){
 		// This is the main execution loop for the user control program. Each time through the loop
 		// your program should update motor + servo values based on feedback from the joysticks.
-
-		//clear timer at the beginning of the loop
-		clearTimer(T1);
 
 		//functions
 		drive();
@@ -153,36 +150,5 @@ task usercontrol() {
 
 		//wait so that there is a slight delay for the cpu to catch up
 		wait1Msec(20);
-
-		//add time variable to the timer
-		time+=time1[T1];
-
-		//between time is equal to the time it took last time to the time that it took this time
-		betweenTime=time-lastTime;
-
-		//if the remainder of cycles is equal to 3, and the time since the last time it changes is not less than 500, then display the drive information
-		if(lcdCycle%3==0){
-			clearLCD();
-			displayLCDCenteredString(0,"        |        ");
-			displayLCDCenteredString(1,"        |        ");
-			if(betweenTime>==2000){
-				lastTime=Time;
-				lcdCycle++;
-			}
-		}else if(lcdCycle%3==1){
-			if(betweenTime>==2000){
-				lastTime=Time;
-				clearLCD;
-				lcdCycle++;
-			}
-		}else if(lcdCycle%3==2){
-			if(betweenTime>==2000){
-				lastTime=Time;
-				clearLCD();
-				lcdCycle++;
-			}
-		}
-
-
 	}
 }
