@@ -107,6 +107,28 @@ void lcdBattery(){
 
 }
 
+task lcdEncode(){
+	while(true){
+	displayLCDPos(0,0);
+  displayNextLCDString("Right Encode: ");
+	displayNextLCDNumber(rightEncode());
+	displayLCDPos(1,0);
+	displayNextLCDString("Left Encode:  ");
+	displayNextLCDNumber(leftEncode());
+	}
+}
+
+task lcdPWM(){
+	while(true){
+	displayLCDPos(0,0);
+	displayNextLCDString("Right PWM: ");
+	displayNextLCDNumber(vexRT[Ch3]);
+	displayLCDPos(1,0);
+	displayNextLCDString("Left PWM: ");
+	displayNextLCDNumber(vexRT[Ch2]);
+	}
+}
+
 //lcd driver control
 task lcd(){
 	displayLCDCenteredString(0,"--INITIALIZING--");
@@ -116,27 +138,15 @@ task lcd(){
 	while(true){
 		lcdBattery();
 
+		startTask(lcdPWM);
 		delayFunc(3000);
+		stopTask(lcdPWM);
 
 		clearLCD();
 
-    displayLCDPos(0,0);
-  	displayNextLCDString("Right Encode: ");
-	 	displayNextLCDNumber(rightEncode());
-		displayLCDPos(1,0);
-		displayNextLCDString("Left Encode:  ");
-		displayNextLCDNumber(leftEncode());
+    startTask(lcdEncode);
 	  delayFunc(3000);
-
-		clearLCD();
-
-		displayLCDPos(0,0);
-		displayNextLCDString("Right PWM: ");
-		displayNextLCDNumber(vexRT[Ch3]);
-		displayLCDPos(1,0);
-		displayNextLCDString("Left PWM: ");
-		displayNextLCDNumber(vexRT[Ch2]);
-		delayFunc(3000);
+		stopTask(lcdEncode);
 
 		clearLCD();
 	}

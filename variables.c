@@ -34,8 +34,5 @@ void delayFunc(int time){
 	wait1Msec(time);
 }
 
-void waitFunc(int time){
-	wait1Msec(time);
-}
 
 string mainBattery, backupBattery;
