@@ -109,24 +109,14 @@ void lcdBattery(){
 
 //lcd driver control
 task lcd(){
-	displayLCDCenteredString(0,"--INITIALIZING--");
-	displayLCDCenteredString(1,"--USER CONTROL--");
-	delayFunc(500);
-	clearLCD();
 	while(true){
-		lcdBattery();
-
-		delayFunc(3000);
-
-		clearLCD();
-
-    displayLCDPos(0,0);
+        displayLCDPos(0,0);
   	displayNextLCDString("Right Encode: ");
 	 	displayNextLCDNumber(rightEncode());
 		displayLCDPos(1,0);
 		displayNextLCDString("Left Encode:  ");
 		displayNextLCDNumber(leftEncode());
-	  delayFunc(3000);
+	  delayFunc(500);
 
 		clearLCD();
 
@@ -136,7 +126,7 @@ task lcd(){
 		displayLCDPos(1,0);
 		displayNextLCDString("Left PWM: ");
 		displayNextLCDNumber(vexRT[Ch2]);
-		delayFunc(3000);
+		delayFunc(500);
 
 		clearLCD();
 	}
@@ -149,6 +139,3 @@ task lcd(){
 
 //file that is really called PID
 #include "rightPID.c"
-
-//after drivercontrol
-#include "auton.c"
