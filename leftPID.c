@@ -1,4 +1,3 @@
-
 #pragma platform(VEX)
 #pragma competitionControl(Competition)
 #pragma autonomousDuration(15)
@@ -7,6 +6,26 @@
 
 //PID
 //Drive Top Level
+// PID using optical shaft encoder
+//
+// Shaft encoder has 360 pulses per revolution
+
+#define LEFT_SENSOR_INDEX    leftEncoder
+#define RIGHT_SENSOR_INDEX   rightEncoder
+#define PID_SENSOR_SCALE     1
+
+#define PID_MOTOR_SCALE     -1
+
+#define PID_DRIVE_MAX       80
+#define PID_DRIVE_MIN     (-80)
+
+// These could be constants but leaving
+// as variables allows them to be modified in the debugger "live"
+float  pid_Kp = 2.0;
+float  pid_Kd = 0.0;
+
+static int   pidRunning = 1;
+static float pidRequestedValue;
 
 /*-----------------------------------------------------------------------------*/
 /*
@@ -22,7 +41,6 @@ task leftPIDController(){
  float  pidSensorCurrentValue;
  float  pidError;
  float  pidLastError;
- float  pidIntegral;
  float  pidDerivative;
  float  pidDrive;
 
@@ -32,36 +50,22 @@ task leftPIDController(){
 
   	// Init the variables - thanks Glenn :)
   pidLastError  = 0;
-  pidIntegral   = 0;
 
   while( true ){
     // Is PID control active ?
     if( pidRunning ){
       // Read the sensor value and scale
-      pidSensorCurrentValue = SensorValue[ LEFT_SENSOR_INDEX ] *
-PID_SENSOR_SCALE;
+      pidSensorCurrentValue = SensorValue[ LEFT_SENSOR_INDEX ] * PID_SENSOR_SCALE;
 
       // calculate error
       pidError = pidSensorCurrentValue - pidRequestedValue;
-
-      // integral - if Ki is not 0
-      if( pid_Ki != 0 ){
-        // If we are inside controlable window then integrate the error
-        if( abs(pidError) < PID_INTEGRAL_LIMIT )
-          pidIntegral = pidIntegral + pidError;
-        else
-          pidIntegral = 0;
-        }
-      else
-        pidIntegral = 0;
 
         // calculate the derivative
         pidDerivative = pidError - pidLastError;
         pidLastError  = pidError;
 
         // calculate drive
-        pidDrive = (pid_Kp * pidError) + (pid_Ki * pidIntegral) +
-(pid_Kd * pidDerivative);
+        pidDrive = (pid_Kp * pidError) + (pid_Kd * pidDerivative);
 
         // limit drive
         if( pidDrive > PID_DRIVE_MAX )
@@ -75,7 +79,6 @@ PID_SENSOR_SCALE;
        // clear all
        pidError      = 0;
        pidLastError  = 0;
-       pidIntegral   = 0;
        pidDerivative = 0;
        driveFunc(0,0);
      }
@@ -89,7 +92,6 @@ PID_SENSOR_SCALE;
 /*
 */
 /*  main task
-*/
 /*
 */
 /*-----------------------------------------------------------------------------*/
