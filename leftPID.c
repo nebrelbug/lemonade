@@ -184,6 +184,11 @@ void drivePID(int clicks, int clicks2){
 
 //auton
 void auton(){
+	motor[puncher1]=127;
+	motor[puncher2]=127;
+	delayFunc(1000);
+	motor[puncher1]=0;
+	motor[puncher2]=0;
 	drivePID(1500,1500);
 	stopTask(leftPIDController);
 	stopTask(rightPIDController);
