@@ -21,16 +21,20 @@ void delayFunc(int time){
 string mainBattery, backupBattery;
 
 // User control drive functions
-void driveFunc(int speed1, int speed2){
+void leftFunc(int speed1){
 	SetMotor(left1,speed1);
-	SetMotor(right1,speed2);
 	SetMotor(left2,speed1);
-	SetMotor(right2,speed2);
 	SetMotor(left3,speed1);
+}
+void rightFunc(int speed2){
+	SetMotor(right1,speed2);
+	SetMotor(right2,speed2);
 	SetMotor(right3,speed2);
 }
+
 void drive(){
-	driveFunc(vexRT[Ch3], vexRT[Ch2]);
+	rightFunc(vexRT[Ch2]);
+	leftFunc(vexRT[Ch3]);
 }
 
 // Stop motor
@@ -97,8 +101,15 @@ task lcd(){
 
 	lcdBattery();
 	delayFunc(2000);
-	clearLCD();
-
+	if( nVexRCReceiveState & 0x02 )
+    {
+    	// second joystick is connected
+    	clearLCD();
+			displayLCDCenteredString(0,"--PARTNER CTRl--");
+			displayLCDCenteredString(1,"----WORKING ----");
+			delayFunc(1000);
+			clearLCD();
+    }
 	while(true){
   	startTask(lcdEncode);
 		delayFunc(1000);

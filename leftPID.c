@@ -27,6 +27,10 @@ float  pid_Kd = 0.0;
 static int   pidRunning = 1;
 static float pidRequestedValue;
 
+static int   pdRunning = 1;
+static float pdRequestedValue;
+
+
 /*-----------------------------------------------------------------------------*/
 /*
 */
@@ -36,7 +40,22 @@ static float pidRequestedValue;
 */
 /*-----------------------------------------------------------------------------*/
 
-task leftPIDController(){
+
+// These could be constants but leaving
+// as variables allows them to be modified in the debugger "live"
+float  pd_Kp = 2.0;
+float  pd_Kd = 0.0;
+
+/*-----------------------------------------------------------------------------*/
+/*
+*/
+/*  pid control task
+*/
+/*
+*/
+/*-----------------------------------------------------------------------------*/
+
+task rightPIDController(){
 
  float  pidSensorCurrentValue;
  float  pidError;
@@ -45,27 +64,27 @@ task leftPIDController(){
  float  pidDrive;
 
  // If we are using an encoder then clear it
- if(SensorType[ LEFT_SENSOR_INDEX ] == sensorQuadEncoder )
-   SensorValue[ LEFT_SENSOR_INDEX ] = 0;
+ if(SensorType[ RIGHT_SENSOR_INDEX ] == sensorQuadEncoder )
+   SensorValue[ RIGHT_SENSOR_INDEX ] = 0;
 
   	// Init the variables - thanks Glenn :)
   pidLastError  = 0;
 
   while( true ){
     // Is PID control active ?
-    if( pidRunning ){
+    if( pdRunning ){
       // Read the sensor value and scale
-      pidSensorCurrentValue = SensorValue[ LEFT_SENSOR_INDEX ] * PID_SENSOR_SCALE;
+      pidSensorCurrentValue = SensorValue[ RIGHT_SENSOR_INDEX ] * PID_SENSOR_SCALE;
 
       // calculate error
-      pidError = pidSensorCurrentValue - pidRequestedValue;
+      pidError = pidSensorCurrentValue - pdRequestedValue;
 
         // calculate the derivative
         pidDerivative = pidError - pidLastError;
         pidLastError  = pidError;
 
         // calculate drive
-        pidDrive = (pid_Kp * pidError) + (pid_Kd * pidDerivative);
+        pidDrive = (pd_Kp * pidError) + (pd_Kd * pidDerivative);
 
         // limit drive
         if( pidDrive > PID_DRIVE_MAX )
@@ -74,19 +93,21 @@ task leftPIDController(){
           pidDrive = PID_DRIVE_MIN;
 
             // send to motor
-           	driveFunc(pidDrive * PID_MOTOR_SCALE, pidDrive* PID_MOTOR_SCALE);
+           	rightFunc(pidDrive * PID_MOTOR_SCALE);
     }else{
        // clear all
        pidError      = 0;
        pidLastError  = 0;
        pidDerivative = 0;
-       driveFunc(0,0);
+       leftFunc(0);
+       rightFunc(0);
      }
 
     // Run at 50Hz
     wait1Msec( 25 );
   }
 }
+
 
 /*-----------------------------------------------------------------------------*/
 /*
@@ -96,9 +117,10 @@ task leftPIDController(){
 */
 /*-----------------------------------------------------------------------------*/
 
-void leftDrivePID(int clicks){
+void drivePID(int clicks, int clicks2){
 	// send the motor off somewhere
   pidRequestedValue = clicks;
+  pdRequestedValue=clicks2;
 	// start the PID task
   startTask( leftPIDController );
 

@@ -126,15 +126,37 @@ task usercontrol()
 	while(true){
 		drive();
 
-		// Intake program
-		if (vexRT[Btn5U]==1){
-			motor[intake]=127;
-			}else if (vexRT[Btn5D]==1){
-			motor[intake]=-127;
-			} else{
-			motor[intake]=0;
-		}
+		if( nVexRCReceiveState & 0x02 )
+    {
+    	// second joystick is connected
+    	// Intake program
+			if (vexRT[Btn6UXmtr2]==1){
+				motor[intake]=127;
+				}else if (vexRT[Btn6DXmtr2]==1){
+				motor[intake]=-127;
+				} else{
+				motor[intake]=0;
+			}
 
+			// Puncher program
+			if (vexRT[Btn5UXmtr2]==1){
+				motor[puncher1]=127;
+				motor[puncher2]=127;
+			} else{
+				motor[puncher1]=0;
+				motor[puncher2]=0;
+			}
+
+    }else{
+			// Intake program
+			if (vexRT[Btn5U]==1){
+				motor[intake]=127;
+				}else if (vexRT[Btn5D]==1){
+				motor[intake]=-127;
+				} else{
+				motor[intake]=0;
+			}
+		}
 		// Puncher program
 		if (vexRT[Btn6U]==1){
 			motor[puncher1]=127;
@@ -142,8 +164,7 @@ task usercontrol()
 			} else{
 			motor[puncher1]=0;
 			motor[puncher2]=0;
-
-		delayFunc(20);
 		}
+		delayFunc(20);
 	}
 }
