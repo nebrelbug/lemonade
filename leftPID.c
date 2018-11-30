@@ -3,6 +3,13 @@
 #pragma autonomousDuration(15)
 #pragma userControlDuration(105)
 
+//auton PID vars
+float  pid_Kp = 2.0; //these are left side
+float  pid_Kd = 0.5;
+
+// as variables allows them to be modified in the debugger "live"
+float  pd_Kp = 2.5; //these are right side
+float  pd_Kd = 0.5;
 
 //PID
 //Drive Top Level
@@ -21,8 +28,6 @@
 
 // These could be constants but leaving
 // as variables allows them to be modified in the debugger "live"
-float  pid_Kp = 2.0;
-float  pid_Kd = 0.0;
 
 static int   pidRunning = 1;
 static float pidRequestedValue;
@@ -32,9 +37,6 @@ static float pdRequestedValue;
 
 
 // These could be constants but leaving
-// as variables allows them to be modified in the debugger "live"
-float  pd_Kp = 2.0;
-float  pd_Kd = 0.0;
 
 
 /*-----------------------------------------------------------------------------*/
@@ -171,11 +173,19 @@ void drivePID(int clicks, int clicks2){
 	startTask( rightPIDController );
 
   // use joystick to modify the requested position
-  while( true ){
+  for(int i=0; i<=5; i++ ){
   	// maximum change for pidRequestedValue will be 127/4*20, around 640 counts per second
   	// free spinning motor is 100rmp so 1.67 rotations per second
 		// 1.67 * 360 counts is 600
+  	wait1Msec(1000);
 
-  	wait1Msec(50);
   }
+}
+
+//auton
+void auton(){
+	drivePID(1300,1300);
+	drivePID(-1300,-1300);
+	stopTask(leftPIDController);
+	stopTask(rightPIDController);
 }

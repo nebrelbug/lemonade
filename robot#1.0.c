@@ -122,6 +122,8 @@ task usercontrol()
 
 	startTask(lcd);
 
+	auton();
+
 	// Drive program
 	while(true){
 		drive();
@@ -137,7 +139,9 @@ task usercontrol()
 				} else{
 				motor[intake]=0;
 			}
-
+			if(vexRT[Btn7UXmtr2]==1){
+				auton();
+			}
 			// Puncher program
 			if (vexRT[Btn5UXmtr2]==1){
 				motor[puncher1]=127;
@@ -156,14 +160,17 @@ task usercontrol()
 				} else{
 				motor[intake]=0;
 			}
-		}
-		// Puncher program
-		if (vexRT[Btn6U]==1){
-			motor[puncher1]=127;
-			motor[puncher2]=127;
-			} else{
-			motor[puncher1]=0;
-			motor[puncher2]=0;
+			// Puncher program
+			if (vexRT[Btn6U]==1){
+				motor[puncher1]=127;
+				motor[puncher2]=127;
+			}else{
+				motor[puncher1]=0;
+				motor[puncher2]=0;
+			}
+			if(vexRT[Btn7U]==1){
+				auton();
+			}
 		}
 		delayFunc(20);
 	}
