@@ -3,14 +3,6 @@
 #pragma autonomousDuration(15)
 #pragma userControlDuration(105)
 
-//auton PID vars
-float  pid_Kp = 2.0; //these are left side
-float  pid_Kd = 0.5;
-
-// as variables allows them to be modified in the debugger "live"
-float  pd_Kp = 2.5; //these are right side
-float  pd_Kd = 0.5;
-
 //PID
 //Drive Top Level
 // PID using optical shaft encoder
@@ -184,7 +176,13 @@ void drivePID(int clicks, int clicks2){
 
 //auton
 void auton(){
+	motor[puncher1]=127;
+	motor[puncher2]=127;
+	delayFunc(1000);
+	motor[puncher1]=0;
+	motor[puncher2]=0;	
 	drivePID(1500,1500);
+	drivePID(-2500,-2500);
 	stopTask(leftPIDController);
 	stopTask(rightPIDController);
 }
