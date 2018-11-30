@@ -184,8 +184,7 @@ void drivePID(int clicks, int clicks2){
 
 //auton
 void auton(){
-	drivePID(1300,1300);
-	drivePID(-1300,-1300);
+	drivePID(1500,1500);
 	stopTask(leftPIDController);
 	stopTask(rightPIDController);
 }

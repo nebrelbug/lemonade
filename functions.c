@@ -96,11 +96,11 @@ task lcd(){
 	clearLCD();
 	displayLCDCenteredString(0,"--INITIALIZING--");
 	displayLCDCenteredString(1,"--USER CONTROL--");
-	delayFunc(2000);
+	delayFunc(1000);
 	clearLCD();
 
 	lcdBattery();
-	delayFunc(2000);
+	delayFunc(1000);
 	if( nVexRCReceiveState & 0x02 )
     {
     	// second joystick is connected

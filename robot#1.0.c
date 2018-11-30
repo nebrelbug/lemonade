@@ -92,7 +92,7 @@ void pre_auton()
 
 task autonomous()
 {
-
+	auton();
 }
 
 /*---------------------------------------------------------------------------*/
@@ -150,7 +150,6 @@ task usercontrol()
 				motor[puncher1]=0;
 				motor[puncher2]=0;
 			}
-
     }else{
 			// Intake program
 			if (vexRT[Btn5U]==1){
