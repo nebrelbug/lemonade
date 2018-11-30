@@ -19,6 +19,13 @@
 // SmartMotorLibrary
 #include "jpearman/SmartMotorLib.c"
 
+//auton vars
+float pid_Kp = 1.2 
+float pid_Kd = 0.2
+	
+float pd_Kp = 1.2 
+float pd_Kd = 0.2
+
 // Other files
 #include "functions.c"
 #include "leftPID.c"
@@ -138,7 +145,7 @@ task usercontrol()
 				motor[intake]=-127;
 				} else{
 				motor[intake]=0;
-			}
+				}
 			if(vexRT[Btn7UXmtr2]==1){
 				auton();
 			}
