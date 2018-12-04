@@ -21,10 +21,12 @@
 #include "jpearman/SmartMotorLib.c"
 
 //auton vars
-float pid_Kp = 0.7;
-float pid_Kd = 0.5;
+float  pid_Kp = 0.7;
+float  pid_Ki = 0.04;
+float  pid_Kd = 0.5;
 
 float pd_Kp = 0.7;
+float  pd_Ki = 0.04;
 float pd_Kd = 0.5;
 
 // Other files
@@ -101,7 +103,6 @@ void pre_auton()
 task autonomous()
 {
 	auton();
-	drivePID(1200,1200);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -130,6 +131,8 @@ task usercontrol()
 	bLCDBacklight = true;									// Turn on LCD Backlight
 
 	startTask(lcd);
+
+	auton();
 
 	// Drive program
 	while(true){
