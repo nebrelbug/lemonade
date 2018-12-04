@@ -1,5 +1,6 @@
 #pragma config(Sensor, dgtl1,  leftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  rightEncoder,   sensorQuadEncoder)
+#pragma config(Motor,  port1,           flipper,       tmotorVex393_HBridge, openLoop)
 #pragma config(Motor,  port2,           puncher1,      tmotorVex393_MC29, openLoop, reversed)
 #pragma config(Motor,  port3,           left3,         tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port4,           left2,         tmotorVex393HighSpeed_MC29, openLoop)
@@ -18,6 +19,13 @@
 
 // SmartMotorLibrary
 #include "jpearman/SmartMotorLib.c"
+
+//auton vars
+float pid_Kp = 0.7;
+float pid_Kd = 0.5;
+
+float pd_Kp = 0.7;
+float pd_Kd = 0.5;
 
 // Other files
 #include "functions.c"
@@ -93,6 +101,7 @@ void pre_auton()
 task autonomous()
 {
 	auton();
+	drivePID(1200,1200);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -122,16 +131,14 @@ task usercontrol()
 
 	startTask(lcd);
 
-	auton();
-
 	// Drive program
 	while(true){
 		drive();
 
-		if( nVexRCReceiveState & 0x02 )
-    {
-    	// second joystick is connected
-    	// Intake program
+/*		if( nVexRCReceiveState & 0x02 )
+		{
+			// second joystick is connected
+			// Intake program
 			if (vexRT[Btn6UXmtr2]==1){
 				motor[intake]=127;
 				}else if (vexRT[Btn6DXmtr2]==1){
@@ -146,31 +153,51 @@ task usercontrol()
 			if (vexRT[Btn5UXmtr2]==1){
 				motor[puncher1]=127;
 				motor[puncher2]=127;
-			} else{
+				} else{
 				motor[puncher1]=0;
 				motor[puncher2]=0;
 			}
-    }else{
+
+		}else{
 			// Intake program
+			if (vexRT[Btn5UXmtr2]==1){
+				motor[puncher1]=127;
+				motor[puncher2]=127;
+				}else{
+				motor[puncher1]=0;
+				motor[puncher2]=0;
+			}
+*/
 			if (vexRT[Btn5U]==1){
-				motor[intake]=127;
+				intakeFunc(127);
 				}else if (vexRT[Btn5D]==1){
-				motor[intake]=-127;
+				intakeFunc(-127);
 				} else{
-				motor[intake]=0;
+				intakeFunc(0);
 			}
 			// Puncher program
 			if (vexRT[Btn6U]==1){
-				motor[puncher1]=127;
-				motor[puncher2]=127;
+				puncherFunc(127);
 			}else{
-				motor[puncher1]=0;
-				motor[puncher2]=0;
+				puncherFunc(0);
 			}
+
+			if(vexRT[Btn8U]==1){
+				flipperFunc(127);
+			}else if(vexRT[Btn8D]==1){
+				flipperFunc(-127);
+			} else {
+				flipperFunc(0);
+			}
+
 			if(vexRT[Btn7U]==1){
 				auton();
 			}
-		}
+
+			if(vexRT[Btn7D]==1){
+				drivePID(2000,2000);
+			}
+
 		delayFunc(20);
 	}
 }

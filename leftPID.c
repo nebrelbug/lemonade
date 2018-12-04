@@ -3,14 +3,6 @@
 #pragma autonomousDuration(15)
 #pragma userControlDuration(105)
 
-//auton PID vars
-float  pid_Kp = 2.0; //these are left side
-float  pid_Kd = 0.5;
-
-// as variables allows them to be modified in the debugger "live"
-float  pd_Kp = 2.5; //these are right side
-float  pd_Kd = 0.5;
-
 //PID
 //Drive Top Level
 // PID using optical shaft encoder
@@ -93,7 +85,6 @@ task leftPIDController(){
        pidLastError  = 0;
        pidDerivative = 0;
        leftFunc(0);
-       rightFunc(0);
      }
 
     // Run at 50Hz
@@ -130,7 +121,7 @@ task rightPIDController(){
         pidLastError  = pidError;
 
         // calculate drive
-        pidDrive = (pd_Kp * pidError) + (pd_Kd * pidDerivative);
+        pidDrive = (pd_Kp * pidError)+(pd_Kd * pidDerivative);
 
         // limit drive
         if( pidDrive > PID_DRIVE_MAX )
@@ -145,7 +136,6 @@ task rightPIDController(){
        pidError      = 0;
        pidLastError  = 0;
        pidDerivative = 0;
-       leftFunc(0);
        rightFunc(0);
      }
 
@@ -165,31 +155,36 @@ task rightPIDController(){
 
 void drivePID(int clicks, int clicks2){
 	// send the motor off somewhere
-  pidRequestedValue = clicks;
-  pdRequestedValue=clicks2;
+  pidRequestedValue= clicks;
+  pdRequestedValue=  clicks2;
 
 	// start the PID task
   startTask( leftPIDController );
 	startTask( rightPIDController );
 
   // use joystick to modify the requested position
-  for(int i=0; i<=5; i++ ){
+  for(int i=0; i<=4; i++ ){
   	// maximum change for pidRequestedValue will be 127/4*20, around 640 counts per second
   	// free spinning motor is 100rmp so 1.67 rotations per second
 		// 1.67 * 360 counts is 600
   	wait1Msec(1000);
-
   }
+	stopTask(leftPIDController);
+	stopTask(rightPIDController);
 }
+
+
+//auton functions
+//forward slightly
 
 //auton
 void auton(){
-	motor[puncher1]=127;
-	motor[puncher2]=127;
-	delayFunc(1000);
-	motor[puncher1]=0;
-	motor[puncher2]=0;
-	drivePID(1500,1500);
-	stopTask(leftPIDController);
-	stopTask(rightPIDController);
+	//1200 from place to flag or to alliance park
+	//2000 from place to center
+	while(leftEncode()<=1400){
+		leftFunc(127);
+		rightFunc(127);
+	}
+	rightFunc(0);
+	leftFunc(0);
 }
