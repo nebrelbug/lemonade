@@ -38,12 +38,15 @@ void drive(){
 }
 
 void puncherFunc(int power){
-	motor[puncher1]=power;
-	motor[puncher2]=power;
+	motor[puncher]=power;
 }
 
 void intakeFunc(int power){
 	motor[intake]=power;
+}
+
+void liftFunc(int power){
+	motor[lift]=power;
 }
 
 void flipperFunc(int power){
@@ -79,6 +82,12 @@ void lcdBattery(){
 
 		//Short delay for the LCD refresh rate
 		wait1Msec(100);
+}
+
+task intakeToggle(){
+	while(Btn8U)!=1{
+		intakeFunc(127);
+	}
 }
 
 task lcdEncode(){
