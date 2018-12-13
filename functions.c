@@ -53,12 +53,6 @@ void flipperFunc(int power){
 	motor[flipper]=power;
 }
 
-
-// Stop motor
-void stopMotor(int time){
-	wait1Msec(time);
-}
-
 //lcd clear
 void clearLCD(){
 	clearLCDLine(0);

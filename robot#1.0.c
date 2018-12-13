@@ -130,6 +130,8 @@ task usercontrol()
 
 	startTask(lcd);
 
+	auton();
+
 	// Drive program
 	while(true){
 		drive();
@@ -169,10 +171,19 @@ task usercontrol()
 */
 			if(vexRT[Btn6U]==1){
 				intakeFunc(127);
-			}else if (vexRT[Btn8D]==1){
+			}else if (vexRT[Btn6D]==1){
 				intakeFunc(-127);
 			}else{
 				intakeFunc(0);
+			}
+
+			//flipper
+			if(vexRT[Btn8R]==1){
+				flipperFunc(127);
+			}else if (vexRT[Btn8L]==1){
+				flipperFunc(-127);
+			}else{
+				flipperFunc(0);
 			}
 
 			// Puncher program

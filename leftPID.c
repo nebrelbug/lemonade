@@ -219,7 +219,6 @@ void auton(){
 	//1200 from place to flag or to alliance park
 	//2000 from place to center
 	startTask(shootPuncher);
-	while(true){
-		wait1Msec(20);
-	}
+	delayFunc(5000);
+	stopTask(shootPuncher);
 }
