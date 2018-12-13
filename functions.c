@@ -62,27 +62,27 @@ void clearLCD(){
 //void lcd display voltage
 void lcdBattery(){
 
-		clearLCD();
+	clearLCD();
 
-		//Display the Primary Robot battery voltage
-		displayLCDString(0, 0, "Primary: ");
-		sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0,'V'); //Build the value to be displayed
-		displayNextLCDString(mainBattery);
+	//Display the Primary Robot battery voltage
+	displayLCDString(0, 0, "Primary: ");
+	sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0,'V'); //Build the value to be displayed
+	displayNextLCDString(mainBattery);
 
-		//Display the Backup battery voltage
-		displayLCDString(1, 0, "Backup: ");
-		sprintf(backupBattery, "%1.2f%c", BackupBatteryLevel/1000.0, 'V');	//Build the value to be displayed
-		displayNextLCDString(backupBattery);
+	//Display the Backup battery voltage
+	displayLCDString(1, 0, "Backup: ");
+	sprintf(backupBattery, "%1.2f%c", BackupBatteryLevel/1000.0, 'V');	//Build the value to be displayed
+	displayNextLCDString(backupBattery);
 
-		//Short delay for the LCD refresh rate
-		wait1Msec(100);
+	//Short delay for the LCD refresh rate
+	wait1Msec(100);
 }
 
 task lcdEncode(){
 	clearLCD();
 	while(true){
 		displayLCDPos(0,0);
-  	displayNextLCDString("> Enc: ");
+		displayNextLCDString("> Enc: ");
 		displayNextLCDNumber(rightEncode());
 		displayLCDPos(1,0);
 		displayNextLCDString("< Enc:  ");
@@ -113,16 +113,16 @@ task lcd(){
 	lcdBattery();
 	delayFunc(1000);
 	if( nVexRCReceiveState & 0x02 )
-    {
-    	// second joystick is connected
-    	clearLCD();
-			displayLCDCenteredString(0,"--PARTNER CTRl--");
-			displayLCDCenteredString(1,"----WORKING ----");
-			delayFunc(1000);
-			clearLCD();
-    }
+	{
+		// second joystick is connected
+		clearLCD();
+		displayLCDCenteredString(0,"--PARTNER CTRl--");
+		displayLCDCenteredString(1,"----WORKING ----");
+		delayFunc(1000);
+		clearLCD();
+	}
 	while(true){
-  	startTask(lcdEncode);
+		startTask(lcdEncode);
 		delayFunc(1000);
 		stopTask(lcdEncode);
 		clearLCD();

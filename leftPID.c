@@ -203,11 +203,27 @@ void drivePID(int clicks, int clicks2){
 }
 
 
-task shootPuncher(){
+task puncherOn(){
 	while(true){
 		puncherFunc(127);
-		wait1Msec(10000);
+	}
+}
+
+task puncherOff(){
+	while(true){
 		puncherFunc(0);
+	}
+}
+
+task intakeOn(){
+	while(true){
+		intakeFunc(127);
+	}
+}
+
+task intakeOff(){
+	while(true){
+		intakeFunc(0);
 	}
 }
 
@@ -218,7 +234,19 @@ task shootPuncher(){
 void auton(){
 	//1200 from place to flag or to alliance park
 	//2000 from place to center
-	startTask(shootPuncher);
-	delayFunc(5000);
-	stopTask(shootPuncher);
+	startTask(puncherOn);
+	delayFunc(800);
+	stopTask(puncherOn);
+	startTask(puncherOff);
+	stopTask(puncherOff);
+
+	startTask(intakeOn);
+	delayFunc(3000);
+	stopTask(intakeOn);
+
+	drivePID(300,300);
+
+
+	startTask(intakeOff);
+	stopTask(intakeOff);
 }
