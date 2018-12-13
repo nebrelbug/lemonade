@@ -130,6 +130,8 @@ task usercontrol()
 
 	startTask(lcd);
 
+	auton();
+
 	// Drive program
 	while(true){
 		drive();
