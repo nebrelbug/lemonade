@@ -82,8 +82,6 @@ void pre_auton()
 	SmartMotorLinkMotors(left1,left3);
 	SmartMotorLinkMotors(right1,right2);
 	SmartMotorLinkMotors(right1,right3);
-	// Intake motors
-	SmartMotorLinkMotors(puncher1,puncher2);
 	// Current monitor
 	SmartMotorCurrentMonitorEnable();
 	// Smart motor start
@@ -168,25 +166,15 @@ task usercontrol()
 				motor[puncher1]=0;
 				motor[puncher2]=0;
 			}
-*/			
-			int intakeToggleVar=0;
-		
-			if (vexRT[Btn8U]==1){
-				if(intakeToggleVar==0){
-					startTask(intakeToggle);
-					intakeToggleVar=1;
-					delayFunc(500);
-				} else if(intakeToggleVar==1){
-					endTask(intakeToggle);
-					intakeToggleVar=0;
-					delayFunc(500);
-				}				
-			}else if (vexRT[Btn8L]==1){
+*/
+			if(vexRT[Btn6U]==1){
+				intakeFunc(127);
+			}else if (vexRT[Btn8D]==1){
 				intakeFunc(-127);
-			}else if(intakeToggleVar!=1){
+			}else{
 				intakeFunc(0);
 			}
-		
+
 			// Puncher program
 			if (vexRT[Btn8D]==1){
 				puncherFunc(127);
@@ -201,7 +189,7 @@ task usercontrol()
 			} else {
 				liftFunc(0);
 			}
-		
+
 			if(vexRT[Btn7U]==1){
 				auton();
 			}

@@ -84,12 +84,6 @@ void lcdBattery(){
 		wait1Msec(100);
 }
 
-task intakeToggle(){
-	while(Btn8U)!=1{
-		intakeFunc(127);
-	}
-}
-
 task lcdEncode(){
 	clearLCD();
 	while(true){
