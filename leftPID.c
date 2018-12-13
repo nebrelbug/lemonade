@@ -242,11 +242,10 @@ void auton(){
 
 	startTask(intakeOn);
 	delayFunc(3000);
+
+	drivePID(1400,1400);
+
 	stopTask(intakeOn);
-
-	drivePID(300,300);
-
-
 	startTask(intakeOff);
 	stopTask(intakeOff);
 }
