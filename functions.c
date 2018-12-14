@@ -14,6 +14,14 @@ int rightEncode(){
 	return(SensorValue[rightEncoder]);
 }
 
+int liftLPotent(){
+	return(SensorValue[liftLeft]);
+}
+
+int liftRPotent(){
+	return(SensorValue[liftRight]);
+}
+
 void delayFunc(int time){
 	wait1Msec(time);
 }
@@ -102,6 +110,27 @@ task lcdPWM(){
 	}
 }
 
+//Wait for Press--------------------------------------------------
+void waitForPress()
+{
+while(nLCDButtons == 0){}
+wait1Msec(5);
+}
+//----------------------------------------------------------------
+
+//Wait for Release------------------------------------------------
+void waitForRelease()
+{
+while(nLCDButtons != 0){}
+wait1Msec(5);
+}
+//----------------------------------------------------------------
+
+void menuFunc(){
+	clearLCD();
+	displayLCDCenteredString(0,"------STOP------");
+}
+
 //lcd driver control
 task lcd(){
 	clearLCD();
@@ -122,6 +151,10 @@ task lcd(){
 		clearLCD();
 	}
 	while(true){
+		if(nLCDButtons!=0){
+			menuFunc();
+		}
+
 		startTask(lcdEncode);
 		delayFunc(1000);
 		stopTask(lcdEncode);
