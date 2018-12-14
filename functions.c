@@ -109,7 +109,7 @@ task lcdPWM(){
 		displayNextLCDNumber(vexRT[Ch2]);
 	}
 }
-
+/*
 //Wait for Press--------------------------------------------------
 void waitForPress()
 {
@@ -126,11 +126,36 @@ wait1Msec(5);
 }
 //----------------------------------------------------------------
 
+const short leftButton = 1;
+const short centerButton = 2;
+const short rightButton = 4;
+
 void menuFunc(){
 	clearLCD();
 	displayLCDCenteredString(0,"------STOP------");
+	displayLCDCenteredString(1,"----PROGRAM?----");
+	waitForPress();
+	if(nLCDButtons==centerButton){
+		waitForRelease();
+		stopTask(usercontrol);
+		stopTask(autonomous);
+		clearLCD();
+		displayLCDCenteredString(0,"----PROGRAM-----");
+		displayLCDCenteredString(1,"----STOPPED-----");
+	}
+	clearLCD();
+	displayLCDCenteredString(0,"-----START------");
+	displayLCDCenteredString(1,"----PROGRAM?----");
+	waitForPress();
+	if(nLCDButtons==centerButton){
+		waitForRelease();
+		startTask(usercontrol);
+		clearLCD();
+		displayLCDCenteredString(0,"----PROGRAM-----");
+		displayLCDCenteredString(1,"----RUNNING-----");
+	}
 }
-
+*/
 //lcd driver control
 task lcd(){
 	clearLCD();
@@ -151,18 +176,19 @@ task lcd(){
 		clearLCD();
 	}
 	while(true){
-		if(nLCDButtons!=0){
-			menuFunc();
-		}
+//		if(nLCDButtons!=0){
+//			waitForRelease();
+//			menuFunc();
+//		}else{
+			startTask(lcdEncode);
+			delayFunc(1000);
+			stopTask(lcdEncode);
+			clearLCD();
 
-		startTask(lcdEncode);
-		delayFunc(1000);
-		stopTask(lcdEncode);
-		clearLCD();
-
-		startTask(lcdPWM);
-		delayFunc(1000);
-		stopTask(lcdPWM);
-		clearLCD();
+			startTask(lcdPWM);
+			delayFunc(1000);
+			stopTask(lcdPWM);
+			clearLCD();
+//		}
 	}
 }
