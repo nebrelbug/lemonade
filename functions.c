@@ -117,7 +117,6 @@ while(nLCDButtons == 0){}
 wait1Msec(5);
 }
 //----------------------------------------------------------------
-
 //Wait for Release------------------------------------------------
 void waitForRelease()
 {
@@ -125,11 +124,9 @@ while(nLCDButtons != 0){}
 wait1Msec(5);
 }
 //----------------------------------------------------------------
-
 const short leftButton = 1;
 const short centerButton = 2;
 const short rightButton = 4;
-
 void menuFunc(){
 	clearLCD();
 	displayLCDCenteredString(0,"------STOP------");
