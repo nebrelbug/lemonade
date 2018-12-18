@@ -9,10 +9,11 @@
 //
 // Shaft encoder has 360 pulses per revolution
 #define PID_INTEGRAL_LIMIT  50
+#define PD_INTEGRAL_LIMIT  50
 
-#define LEFT_SENSOR_INDEX    leftEncoder
-#define RIGHT_SENSOR_INDEX   rightEncoder
-#define PID_SENSOR_SCALE     1
+#define LEFT_SENSOR_INDEX    leftEncode()
+#define RIGHT_SENSOR_INDEX   rightEncode()
+#define PID_SENSOR_SCALE     -1
 
 #define LEFT_MOTOR_INDEX    left1
 #define RIGHT_MOTOR_INDEX   right1
@@ -27,6 +28,7 @@
 static int   pidRunning = 1;
 static float pidRequestedValue;
 
+static int   pdRunning = 1;
 static float pdRequestedValue;
 
 
@@ -45,16 +47,17 @@ static float pdRequestedValue;
 task leftPIDController()
 {
     float  pidSensorCurrentValue;
-
     float  pidError;
     float  pidLastError;
     float  pidIntegral;
     float  pidDerivative;
+    float  pidDrive;
+
+    float  pdSensorCurrentValue;
     float  pdError;
     float  pdLastError;
     float  pdIntegral;
     float  pdDerivative;
-    float  pidDrive;
     float  pidDrive2;
 
     // If we are using an encoder then clear it
@@ -68,14 +71,23 @@ task leftPIDController()
     pidLastError  = 0;
     pidIntegral   = 0;
 
+    pdLastError  = 0;
+    pdIntegral   = 0;
+
     while( true )
         {
         // Is PID control active ?
-        if( pdRunning )
+        if( pdRunning && pidRunning )
             {
             // Read the sensor value and scale
+            pdSensorCurrentValue = SensorValue[ RIGHT_SENSOR_INDEX ] * PID_SENSOR_SCALE;
+
+                        // Read the sensor value and scale
             pidSensorCurrentValue = SensorValue[ LEFT_SENSOR_INDEX ] * PID_SENSOR_SCALE;
 
+
+            // calculate error
+            pidError = pidSensorCurrentValue - pidRequestedValue;
 
             // calculate error
             pdError = pdSensorCurrentValue - pdRequestedValue;
@@ -92,31 +104,7 @@ task leftPIDController()
             else
                 pdIntegral = 0;
 
-            // calculate the derivative
-            pdDerivative = pdError - pdLastError;
-            pdLastError  = pdError;
-
-            // calculate drive
-
-            pidDrive2 = (pd_Kp * pidError) + (pd_Ki * pidIntegral) + (pd_Kd * pidDerivative);
-
-            // limit drive
-            if( pidDrive > PID_DRIVE_MAX )
-                pidDrive = PID_DRIVE_MAX;
-            if( pidDrive < PID_DRIVE_MIN )
-                pidDrive = PID_DRIVE_MIN;
-
-        // Is PID control active ?
-        if( pidRunning )
-            {
-            // Read the sensor value and scale
-            pidSensorCurrentValue = SensorValue[ LEFT_SENSOR_INDEX ] * PID_SENSOR_SCALE;
-
-
-            // calculate error
-            pidError = pidSensorCurrentValue - pidRequestedValue;
-
-            // integral - if Ki is not 0
+                        // integral - if Ki is not 0
             if( pid_Ki != 0 )
                 {
                 // If we are inside controlable window then integrate the error
@@ -128,12 +116,18 @@ task leftPIDController()
             else
                 pidIntegral = 0;
 
-            // calculate the derivative
+						// calculate the derivative
             pidDerivative = pidError - pidLastError;
             pidLastError  = pidError;
 
+            // calculate the derivative
+            pdDerivative = pdError - pdLastError;
+            pdLastError  = pdError;
+
             // calculate drive
             pidDrive = (pid_Kp * pidError) + (pid_Ki * pidIntegral) + (pid_Kd * pidDerivative);
+
+            pidDrive2 = (pd_Kp * pidError) + (pd_Ki * pidIntegral) + (pd_Kd * pidDerivative);
 
             // limit drive
             if( pidDrive > PID_DRIVE_MAX )
@@ -141,11 +135,15 @@ task leftPIDController()
             if( pidDrive < PID_DRIVE_MIN )
                 pidDrive = PID_DRIVE_MIN;
 
-            // send to motor
-            leftFunc(pidDrive * PID_MOTOR_SCALE);
-            }
-        else
-            {
+            if( pidDrive2 > PID_DRIVE_MAX )
+                pidDrive2 = PID_DRIVE_MAX;
+            if( pidDrive2 < PID_DRIVE_MIN )
+                pidDrive2 = PID_DRIVE_MIN;
+
+            leftFunc(pidDrive);
+						rightFunc(pidDrive2);
+
+      	}else{
             // clear all
             pidError      = 0;
             pidLastError  = 0;
@@ -178,8 +176,8 @@ task leftPIDController()
 void drivePID(int clicks, int clicks2){
 
 	// send the motor off somewhere
-  pidRequestedValue= clicks;
-  pdRequestedValue=  clicks2;
+  pidRequestedValue= clicks*-1;
+  pdRequestedValue=  clicks2*-1;
 
 	// start the PID task
   startTask( leftPIDController );
@@ -234,11 +232,14 @@ void auton(){
 	startTask(puncherOff);
 	stopTask(puncherOff);
 
-	drivePID(1300,1300);
+	drivePID(300,300);
+/*
+	drivePID(1150,1150);
 	drivePID(-2000,-2000);
 	drivePID(300,-300);
 	drivePID(-150,-150);
 	drivePID(600,600);
+*/
 }
 ////////////////////////////////////////////////////////////////////////////////
 
