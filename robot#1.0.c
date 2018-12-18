@@ -132,8 +132,7 @@ task autonomous()
 // update your motors, etc.
 // ........................................................................
 
-task usercontrol()
-{
+task usercontrol(){
 	bLCDBacklight = true;									// Turn on LCD Backlight
 
 	startTask(lcd);
