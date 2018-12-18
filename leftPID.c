@@ -11,8 +11,8 @@
 #define PID_INTEGRAL_LIMIT  50
 #define PD_INTEGRAL_LIMIT  50
 
-#define LEFT_SENSOR_INDEX    leftEncode()
-#define RIGHT_SENSOR_INDEX   rightEncode()
+#define LEFT_SENSOR_INDEX    leftEncoder
+#define RIGHT_SENSOR_INDEX   rightEncoder
 #define PID_SENSOR_SCALE     -1
 
 #define LEFT_MOTOR_INDEX    left1
@@ -31,7 +31,7 @@ static float pidRequestedValue;
 static int   pdRunning = 1;
 static float pdRequestedValue;
 
-
+bool taskRunning=false;
 // These could be constants but leaving
 
 
@@ -46,6 +46,7 @@ static float pdRequestedValue;
 
 task leftPIDController()
 {
+		taskRunning=true;
     float  pidSensorCurrentValue;
     float  pidError;
     float  pidLastError;
@@ -74,10 +75,15 @@ task leftPIDController()
     pdLastError  = 0;
     pdIntegral   = 0;
 
-    while( true )
-        {
+    while( true ){
+    	if( pidRunning ){
+        if(pidSensorCurrentValue==pidRequestedValue){
+        	taskRunning = false;
+        	stopTask(leftPIDController);
+      	}
+
         // Is PID control active ?
-        if( pdRunning && pidRunning )
+        if( pdRunning )
             {
             // Read the sensor value and scale
             pdSensorCurrentValue = SensorValue[ RIGHT_SENSOR_INDEX ] * PID_SENSOR_SCALE;
@@ -142,7 +148,7 @@ task leftPIDController()
 
             leftFunc(pidDrive);
 						rightFunc(pidDrive2);
-
+					}
       	}else{
             // clear all
             pidError      = 0;
@@ -181,10 +187,11 @@ void drivePID(int clicks, int clicks2){
 
 	// start the PID task
   startTask( leftPIDController );
-//	startTask( rightPIDController );
+  taskRunning=true;
+	//	startTask( rightPIDController );
 
   // use joystick to modify the requested position
-  while(pidRequestedValue!=leftEncode()){
+  while(taskRunning){
   	// maximum change for pidRequestedValue will be 127/4*20, around 640 counts per second
   	// free spinning motor is 100rmp so 1.67 rotations per second
 		// 1.67 * 360 counts is 600
@@ -207,6 +214,21 @@ task puncherOff(){
 	}
 }
 
+task driveOn(){
+	while(true){
+		leftFunc(-127);
+		rightFunc(-127);
+	}
+}
+
+task driveOff(){
+	while(true){
+		leftFunc(0);
+		rightFunc(0);
+	}
+}
+
+
 task intakeOn(){
 	while(true){
 		intakeFunc(127);
@@ -218,6 +240,51 @@ task intakeOff(){
 		intakeFunc(0);
 	}
 }
+
+/*----------------------------------------------------------------------------------------------------*\
+|*                                   - Point Turns with Encoders -                                    *|
+|*                                      ROBOTC on VEX 2.0 CORTEX                                      *|
+|*                                                                                                    *|
+|*  This program instructs the robot to turn left, and then right, using feedback from the encoders   *|
+|*  to determine how much.  There is a 2 second pause at the beginning of the program.                *|
+|*                                                                                                    *|
+|*                                        ROBOT CONFIGURATION                                         *|
+|*    NOTES:                                                                                          *|
+|*    1)  Reversing 'rightMotor' (port 2) in the "Motors and Sensors Setup" is needed with the        *|
+|*        "Squarebot" model, but may not be needed for all robot configurations.                      *|
+|*    2)  Whichever encoder is being used for feedback should be cleared just before it starts        *|
+|*        counting by using the "SensorValue(encoder) = 0;".  This helps ensure consistancy.          *|
+|*                                                                                                    *|
+|*    MOTORS & SENSORS:                                                                               *|
+|*    [I/O Port]          [Name]              [Type]                [Description]                     *|
+|*    Motor   - Port 2    rightMotor          VEX 3-wire module     Right side motor                  *|
+|*    Motor   - Port 3    leftMotor           VEX 3-wire module     Left side motor                   *|
+|*    Digital - Port 1,2  rightEncoder        VEX Shaft Encoder     Right side                        *|
+|*    Digital - Port 3,4  leftEncoder         VEX Shaft Encoder     Left side                         *|
+\*----------------------------------------------------------------------------------------------------*/
+
+
+void turnLeft(int leftVal){
+	resetEncoders();
+  while(SensorValue(rightEncoder) < leftVal)//rightEncoder has counted less than 1800 counts
+	{
+		//Turn Left
+		rightFunc(127);  //Motor on port2 is run at full (127) power forward
+		leftFunc(-127);       //Motor on port3 is run at full (-127) power reverse
+	}
+}
+
+void turnRight(int rightVal){
+	SensorValue[leftEncoder] = 0;	            //Set the encoder so that it starts counting at 0
+
+  while(SensorValue(leftEncoder) < rightVal)//While leftEncoder has counted less than 1800 counts
+	{
+		//Turn Right
+    rightFunc(-127);// port2 is run at full (127) power forward
+		leftFunc(127);      //Motor on port3 is run at full (-127) power reverse	}
+	}
+}
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 //auton functions
 //forward slightly
@@ -232,17 +299,23 @@ void auton(){
 	startTask(puncherOff);
 	stopTask(puncherOff);
 
-	drivePID(300,300);
-/*
-	drivePID(1150,1150);
-	drivePID(-2000,-2000);
-	drivePID(300,-300);
-	drivePID(-150,-150);
-	drivePID(600,600);
-*/
+//	drivePID(1150,1150);
+//	drivePID(-2000,-2000);
+  // If we are using an encoder then clear it
+	resetEncoders();
+
+	turnRight(300);
+
+	startTask(driveOn);
+	delayFunc(500);
+	stopTask(driveOn);
+	startTask(driveOff);
+	stopTask(driveOff);
+
+	drivePID(1200,1200);
 }
 ////////////////////////////////////////////////////////////////////////////////
-
+/*
 #define LIFT_PID_INTEGRAL_LIMIT  50
 
 #define LIFT_SENSOR_INDEX    liftRight
@@ -326,7 +399,7 @@ task liftPIDController(){
 /*
 */
 /*-----------------------------------------------------------------------------*/
-
+/*
 void liftPID(int potentValue){
 	pidLiftRequestedValue+=potentValue;
 
@@ -344,3 +417,4 @@ void liftPID(int potentValue){
   }
 	stopTask(liftPIDController);
 }
+*/

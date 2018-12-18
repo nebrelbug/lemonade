@@ -4,6 +4,11 @@
 #pragma autonomousDuration(15)
 #pragma userControlDuration(105)
 
+void resetEncoders(){
+	SensorValue[ leftEncoder ] = 0;
+  SensorValue[ rightEncoder ] = 0;
+}
+
 //after ints
 //sensor encoders int
 int leftEncode(){
@@ -14,6 +19,7 @@ int rightEncode(){
 	return(SensorValue[rightEncoder]);
 }
 
+/*
 int liftLPotent(){
 	return(SensorValue[liftLeft]);
 }
@@ -21,6 +27,7 @@ int liftLPotent(){
 int liftRPotent(){
 	return(SensorValue[liftRight]);
 }
+*/
 
 void delayFunc(int time){
 	wait1Msec(time);

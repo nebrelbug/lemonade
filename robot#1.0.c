@@ -33,9 +33,11 @@ float pd_Kp = 0.7;
 float  pd_Ki = 0.04;
 float pd_Kd = 0.5;
 
+/*
 float  pid_Lift_Kp = 2;
 float  pid_Lift_Ki = 0.04;
 float  pid_Lift_Kd = 0.5;
+*/
 
 // Other files
 #include "functions.c"
@@ -137,6 +139,8 @@ task usercontrol(){
 
 	startTask(lcd);
 
+	resetEncoders();
+
 	// Drive program
 	while(true){
 		drive();
@@ -192,7 +196,11 @@ task usercontrol(){
 
 			// Puncher program
 			if (vexRT[Btn8D]==1){
-				puncherFunc(127);
+					startTask(puncherOn);
+					delayFunc(800);
+					stopTask(puncherOn);
+					startTask(puncherOff);
+					stopTask(puncherOff);
 			}else{
 				puncherFunc(0);
 			}
