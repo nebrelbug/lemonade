@@ -50,6 +50,10 @@ task leftPIDController()
     float  pidLastError;
     float  pidIntegral;
     float  pidDerivative;
+    float  pdError;
+    float  pdLastError;
+    float  pdIntegral;
+    float  pdDerivative;
     float  pidDrive;
     float  pidDrive2;
 
@@ -57,12 +61,51 @@ task leftPIDController()
     if( SensorType[ LEFT_SENSOR_INDEX ] == sensorQuadEncoder )
         SensorValue[ LEFT_SENSOR_INDEX ] = 0;
 
+    if( SensorType[ RIGHT_SENSOR_INDEX ] == sensorQuadEncoder )
+        SensorValue[ RIGHT_SENSOR_INDEX ] = 0;
+
     // Init the variables - thanks Glenn :)
     pidLastError  = 0;
     pidIntegral   = 0;
 
     while( true )
         {
+        // Is PID control active ?
+        if( pdRunning )
+            {
+            // Read the sensor value and scale
+            pidSensorCurrentValue = SensorValue[ LEFT_SENSOR_INDEX ] * PID_SENSOR_SCALE;
+
+
+            // calculate error
+            pdError = pdSensorCurrentValue - pdRequestedValue;
+
+            // integral - if Ki is not 0
+            if( pd_Ki != 0 )
+                {
+                // If we are inside controlable window then integrate the error
+                if( abs(pdError) < PD_INTEGRAL_LIMIT )
+                    pdIntegral = pdIntegral + pdError;
+                else
+                    pdIntegral = 0;
+                }
+            else
+                pdIntegral = 0;
+
+            // calculate the derivative
+            pdDerivative = pdError - pdLastError;
+            pdLastError  = pdError;
+
+            // calculate drive
+
+            pidDrive2 = (pd_Kp * pidError) + (pd_Ki * pidIntegral) + (pd_Kd * pidDerivative);
+
+            // limit drive
+            if( pidDrive > PID_DRIVE_MAX )
+                pidDrive = PID_DRIVE_MAX;
+            if( pidDrive < PID_DRIVE_MIN )
+                pidDrive = PID_DRIVE_MIN;
+
         // Is PID control active ?
         if( pidRunning )
             {
@@ -92,7 +135,6 @@ task leftPIDController()
             // calculate drive
             pidDrive = (pid_Kp * pidError) + (pid_Ki * pidIntegral) + (pid_Kd * pidDerivative);
 
-            pidDrive2 = (pd_Kp * pidError) + (pd_Ki * pidIntegral) + (pd_Kd * pidDerivative);
             // limit drive
             if( pidDrive > PID_DRIVE_MAX )
                 pidDrive = PID_DRIVE_MAX;
@@ -101,8 +143,6 @@ task leftPIDController()
 
             // send to motor
             leftFunc(pidDrive * PID_MOTOR_SCALE);
-
-            rightFunc(pidDrive2 * PID_MOTOR_SCALE);
             }
         else
             {
@@ -111,6 +151,13 @@ task leftPIDController()
             pidLastError  = 0;
             pidIntegral   = 0;
             pidDerivative = 0;
+
+            // clear all
+            pdError      = 0;
+            pdLastError  = 0;
+            pdIntegral   = 0;
+            pdDerivative = 0;
+
             leftFunc(0);
             rightFunc(0);
             }
@@ -129,6 +176,7 @@ task leftPIDController()
 /*-----------------------------------------------------------------------------*/
 
 void drivePID(int clicks, int clicks2){
+
 	// send the motor off somewhere
   pidRequestedValue= clicks;
   pdRequestedValue=  clicks2;
@@ -138,7 +186,7 @@ void drivePID(int clicks, int clicks2){
 //	startTask( rightPIDController );
 
   // use joystick to modify the requested position
-  while(true){
+  while(pidRequestedValue!=leftEncode()){
   	// maximum change for pidRequestedValue will be 127/4*20, around 640 counts per second
   	// free spinning motor is 100rmp so 1.67 rotations per second
 		// 1.67 * 360 counts is 600
@@ -146,8 +194,8 @@ void drivePID(int clicks, int clicks2){
   }
 	stopTask(leftPIDController);
 }
-////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////
 
 task puncherOn(){
 	while(true){
@@ -186,14 +234,11 @@ void auton(){
 	startTask(puncherOff);
 	stopTask(puncherOff);
 
-	startTask(intakeOn);
-	delayFunc(3000);
-
-	drivePID(1400,1400);
-
-	stopTask(intakeOn);
-	startTask(intakeOff);
-	stopTask(intakeOff);
+	drivePID(1300,1300);
+	drivePID(-2000,-2000);
+	drivePID(300,-300);
+	drivePID(-150,-150);
+	drivePID(600,600);
 }
 ////////////////////////////////////////////////////////////////////////////////
 

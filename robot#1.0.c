@@ -199,11 +199,11 @@ task usercontrol()
 			}
 
 			if(vexRT[Btn5U]==1){
-				liftPID(1);
+				liftFunc(127);
 			}else if(vexRT[Btn5D]==1){
-				liftPID(-1);
+				liftFunc(-127);
 			} else {
-				liftPID(0);
+				liftFunc(0);
 			}
 
 			if(vexRT[Btn7U]==1){
