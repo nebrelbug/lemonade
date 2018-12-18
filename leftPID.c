@@ -275,8 +275,7 @@ void turnLeft(int leftVal){
 }
 
 void turnRight(int rightVal){
-	SensorValue[leftEncoder] = 0;	            //Set the encoder so that it starts counting at 0
-
+	resetEncoders();
   while(SensorValue(leftEncoder) < rightVal)//While leftEncoder has counted less than 1800 counts
 	{
 		//Turn Right
@@ -304,10 +303,10 @@ void auton(){
   // If we are using an encoder then clear it
 	resetEncoders();
 
-	turnRight(300);
+	turnRight(250);
 
 	startTask(driveOn);
-	delayFunc(500);
+	delayFunc(750);
 	stopTask(driveOn);
 	startTask(driveOff);
 	stopTask(driveOff);
