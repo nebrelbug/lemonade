@@ -37,19 +37,29 @@ string mainBattery, backupBattery;
 
 // User control drive functions
 void leftFunc(int speed1){
+	speed1*=1.1;
 	SetMotor(left1,speed1);
 	SetMotor(left2,speed1);
 	SetMotor(left3,speed1);
 }
+
 void rightFunc(int speed2){
+	speed2*=1.0;
 	SetMotor(right1,speed2);
 	SetMotor(right2,speed2);
 	SetMotor(right3,speed2);
 }
 
+bool driveReverse=false;
+
 void drive(){
-	rightFunc(vexRT[Ch2]);
-	leftFunc(vexRT[Ch3]);
+	if(driveReverse==true){
+		leftFunc(vexRT[Ch2]*-1);
+		rightFunc(vexRT[Ch3]*-1);
+	} else if(driveReverse==false){
+		rightFunc(vexRT[Ch2]);
+		leftFunc(vexRT[Ch3]);
+	}
 }
 
 void puncherFunc(int power){
@@ -116,6 +126,7 @@ task lcdPWM(){
 		displayNextLCDNumber(vexRT[Ch2]);
 	}
 }
+
 /*
 //Wait for Press--------------------------------------------------
 void waitForPress()
@@ -163,27 +174,32 @@ void menuFunc(){
 //lcd driver control
 task lcd(){
 	clearLCD();
-	displayLCDCenteredString(0,"--INITIALIZING--");
-	displayLCDCenteredString(1,"--USER CONTROL--");
-	delayFunc(1000);
-	clearLCD();
 
 	lcdBattery();
-	delayFunc(1000);
+	delayFunc(1500);
+	clearLCD();
 	if( nVexRCReceiveState & 0x02 )
 	{
 		// second joystick is connected
-		clearLCD();
 		displayLCDCenteredString(0,"--PARTNER CTRl--");
 		displayLCDCenteredString(1,"----WORKING ----");
 		delayFunc(1000);
 		clearLCD();
+	}else{
+		// second joystick is connected
+		displayLCDCenteredString(0,"--PARTNER CTRl--");
+		displayLCDCenteredString(1,"--NOT WORKING---");
+		delayFunc(1000);
+		clearLCD();
 	}
+
 	while(true){
 //		if(nLCDButtons!=0){
 //			waitForRelease();
 //			menuFunc();
 //		}else{
+
+
 			startTask(lcdEncode);
 			delayFunc(1000);
 			stopTask(lcdEncode);

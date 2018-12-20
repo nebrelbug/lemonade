@@ -25,13 +25,15 @@
 #include "jpearman/SmartMotorLib.c"
 
 //auton vars
+//Left
 float  pid_Kp = 0.7;
-float  pid_Ki = 0.04;
-float  pid_Kd = 0.5;
+float  pid_Ki = 0.09;
+float  pid_Kd = 0.9;
 
-float pd_Kp = 0.7;
-float  pd_Ki = 0.04;
-float pd_Kd = 0.5;
+//Right
+float  pd_Kp = 1.1;
+float  pd_Ki = 0.02;
+float  pd_Kd = 0.5;
 
 /*
 float  pid_Lift_Kp = 2;
@@ -110,6 +112,7 @@ void pre_auton()
 
 task autonomous()
 {
+	//(find in leftPID.c)
 	auton();
 }
 
@@ -137,12 +140,13 @@ task autonomous()
 task usercontrol(){
 	bLCDBacklight = true;									// Turn on LCD Backlight
 
-	startTask(lcd);
+	startTask(lcd);   //(find in leftPID.c)
 
-	resetEncoders();
+	resetEncoders();  //(find in functions.c)
 
 	// Drive program
 	while(true){
+		// drive program (find in functions.c)
 		drive();
 
 /*		if( nVexRCReceiveState & 0x02 )
@@ -177,14 +181,16 @@ task usercontrol(){
 				motor[puncher2]=0;
 			}
 */
-			if(vexRT[Btn6U]==1){
-				intakeFunc(127);
-			}else if (vexRT[Btn6D]==1){
-				intakeFunc(-127);
-			}else{
-				intakeFunc(0);
-			}
 
+			//lift program (find in functions.c)
+			if(vexRT[Btn5UXmtr2]==1){
+				liftFunc(127);
+			}else if (vexRT[Btn5DXmtr2]==1){
+				liftFunc(-127);
+			}else{
+				liftFunc(0);
+			}
+/*
 			//flipper
 			if(vexRT[Btn8R]==1){
 				flipperFunc(127);
@@ -193,18 +199,18 @@ task usercontrol(){
 			}else{
 				flipperFunc(0);
 			}
-
-			// Puncher program
-			if (vexRT[Btn8D]==1){
+*/
+			// Puncher program (find in functions.c)
+			if (vexRT[Btn6UXmtr2]==1){
 					startTask(puncherOn);
-					delayFunc(800);
+					delayFunc(1000);
 					stopTask(puncherOn);
 					startTask(puncherOff);
 					stopTask(puncherOff);
 			}else{
 				puncherFunc(0);
 			}
-
+/*
 			if(vexRT[Btn5U]==1){
 				liftFunc(127);
 			}else if(vexRT[Btn5D]==1){
@@ -212,10 +218,47 @@ task usercontrol(){
 			} else {
 				liftFunc(0);
 			}
+*/
 
+			//reverse drive so that you can easily flip caps (find in functions.c)
+			if(vexRT[Btn8D]==1){
+				if(driveReverse==false){
+					waitUntil(vexRT[Btn8D]==0);
+					driveReverse=true;
+					delayFunc(500);
+				}
+				else if(driveReverse==true){
+					waitUntil(vexRT[Btn8D]==0);
+					driveReverse=false;
+					delayFunc(500);
+				}
+			}
+
+			//reverse drive so that you can easily flip caps (find in functions.c)
+			if(vexRT[Btn8DXmtr2]==1){
+				if(driveReverse==false){
+					waitUntil(vexRT[Btn8D]==0);
+					driveReverse=true;
+					delayFunc(500);
+				}
+				else if(driveReverse==true){
+					waitUntil(vexRT[Btn8D]==0);
+					driveReverse=false;
+					delayFunc(500);
+				}
+			}
+
+			//if button pressed run auton (auton is in leftPID.c)
 			if(vexRT[Btn7U]==1){
 				auton();
 			}
+
+			//if button pressed reset Encoders (to find this function look at functions.c)
+			if(vexRT[Btn7D]==1){
+				resetEncoders();
+			}
+
 		delayFunc(20);
+
 	}
 }

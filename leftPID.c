@@ -229,7 +229,7 @@ task driveOff(){
 }
 
 
-task intakeOn(){
+task intakeUp(){
 	while(true){
 		intakeFunc(127);
 	}
@@ -238,6 +238,11 @@ task intakeOn(){
 task intakeOff(){
 	while(true){
 		intakeFunc(0);
+	}
+}
+task intakeDown(){
+	while(true){
+		intakeFunc(-127);
 	}
 }
 
@@ -292,18 +297,24 @@ void turnRight(int rightVal){
 void auton(){
 	//1200 from place to flag or to alliance park
 	//2000 from place to center
+
 	startTask(puncherOn);
 	delayFunc(800);
 	stopTask(puncherOn);
 	startTask(puncherOff);
 	stopTask(puncherOff);
 
-//	drivePID(1150,1150);
-//	drivePID(-2000,-2000);
+	drivePID(1150,1150);
+	drivePID(-2000,-2000);
   // If we are using an encoder then clear it
 	resetEncoders();
 
-	turnRight(250);
+	turnRight(205);
+
+	startTask(driveOff);
+	stopTask(driveOff);
+
+	delayFunc(500);
 
 	startTask(driveOn);
 	delayFunc(750);
