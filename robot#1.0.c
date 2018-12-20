@@ -4,8 +4,8 @@
 #pragma config(Sensor, in4,    ballIntake,     sensorLineFollower)
 #pragma config(Sensor, dgtl1,  leftEncoder,    sensorQuadEncoder)
 #pragma config(Sensor, dgtl3,  rightEncoder,   sensorQuadEncoder)
-#pragma config(Motor,  port1,           intake,        tmotorVex393_HBridge, openLoop)
-#pragma config(Motor,  port2,           lift,          tmotorVex393_MC29, openLoop)
+#pragma config(Motor,  port1,           lift,        tmotorVex393_HBridge, openLoop)
+#pragma config(Motor,  port2,           intake,          tmotorVex393_MC29, openLoop)
 #pragma config(Motor,  port3,           right3,        tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port4,           right2,        tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port5,           right1,        tmotorVex393HighSpeed_MC29, openLoop)
@@ -182,13 +182,34 @@ task usercontrol(){
 			}
 */
 
+			bool intakeToggle = false;
+
 			//lift program (find in functions.c)
 			if(vexRT[Btn5UXmtr2]==1){
-				liftFunc(127);
+				if(intakeToggle==false){
+					waitUntil(vexRT[Btn5DXmtr2]==0);
+					intakeFunc(127);
+					intakeToggle=true;
+				} else if(intakeToggle==true){
+					waitUntil(vexRT[Btn5DXmtr2]==0);
+					intakeFunc(0);
+					intakeToggle=false;
+				}
 			}else if (vexRT[Btn5DXmtr2]==1){
-				liftFunc(-127);
+				if(intakeToggle==true){
+					waitUntil(vexRT[Btn5UXmtr2]==0);
+					intakeFunc(0);
+					intakeToggle=false;
+					delayFunc(500);
+					intakeFunc(127);
+					intakeToggle=true;
+				}else if(intakeToggle==false){
+					waitUntil(vexRT[Btn5UXmtr2]==0);
+					intakeToggle=true;
+					intakeFunc(-127);
+				}
 			}else{
-				liftFunc(0);
+				intakeFunc(0);
 			}
 /*
 			//flipper
@@ -226,8 +247,7 @@ task usercontrol(){
 					waitUntil(vexRT[Btn8D]==0);
 					driveReverse=true;
 					delayFunc(500);
-				}
-				else if(driveReverse==true){
+				}else if(driveReverse==true){
 					waitUntil(vexRT[Btn8D]==0);
 					driveReverse=false;
 					delayFunc(500);

@@ -70,10 +70,6 @@ void intakeFunc(int power){
 	motor[intake]=power;
 }
 
-void liftFunc(int power){
-	motor[lift]=power;
-}
-
 void flipperFunc(int power){
 	motor[flipper]=power;
 }
