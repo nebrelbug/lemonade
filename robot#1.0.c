@@ -28,11 +28,11 @@
 //Left
 float  pid_Kp = 0.7;
 float  pid_Ki = 0.09;
-float  pid_Kd = 0.9;
+float  pid_Kd = 0.5;
 
 //Right
-float  pd_Kp = 1.1;
-float  pd_Ki = 0.02;
+float  pd_Kp = 0.7;
+float  pd_Ki = 0.09;
 float  pd_Kd = 0.5;
 
 /*
@@ -580,110 +580,6 @@ void auton(){
 
 	drivePID(1200,1200);
 }
-////////////////////////////////////////////////////////////////////////////////
-/*
-#define LIFT_PID_INTEGRAL_LIMIT  50
-
-#define LIFT_SENSOR_INDEX    liftRight
-#define LIFT_PID_SENSOR_SCALE     1
-
-#define LIFT_LEFT_MOTOR_INDEX    left1
-#define LIFT_RIGHT_MOTOR_INDEX   right1
-#define LIFT_PID_MOTOR_SCALE     -1
-
-#define PID_LIFT_MAX       80
-#define PID_LIFT_MIN     (-80)
-
-// These could be constants but leaving
-// as variables allows them to be modified in the debugger "live"
-
-static int   pidLiftRunning = 1;
-static float pidLiftRequestedValue;
-
-task liftPIDController(){
-
- float  pidSensorCurrentValue;
- float  pidError;
- float  pidLastError;
- float  pidDerivative;
- float  pidDrive;
- float  pidIntegral;
-
-  	// Init the variables - thanks Glenn :)
-	  pidLastError  = 0;
-    pidIntegral   = 0;
-
-  while( true ){
-    // Is PID control active ?
-    if( pidLiftRunning ){
-      // Read the sensor value and scale
-      pidSensorCurrentValue = SensorValue[ LIFT_SENSOR_INDEX ] * PID_SENSOR_SCALE;
-
-      // calculate error
-      pidError = pidSensorCurrentValue - pdRequestedValue;
-
-        // calculate the derivative
-        pidDerivative = pidError - pidLastError;
-        pidLastError  = pidError;
-
-        if( pid_Lift_Ki != 0 ){
-          // If we are inside controlable window then integrate the error
-          if( abs(pidError) < LIFT_PID_INTEGRAL_LIMIT )
-            pidIntegral = pidIntegral + pidError;
-          else
-            pidIntegral = 0;
-        }
-        // calculate drive
-        pidDrive = (pid_Lift_Kp * pidError)+(pid_Lift_Kd * pidDerivative)+(pid_Lift_Ki * pidIntegral);
-
-        // limit drive
-        if( pidDrive > PID_LIFT_MAX )
-          pidDrive = PID_LIFT_MAX;
-        if( pidDrive < PID_LIFT_MIN )
-          pidDrive = PID_LIFT_MIN;
-
-            // send to motor
-           	liftFunc(pidDrive * PID_MOTOR_SCALE);
-    }else{
-       // clear all
-       pidError      = 0;
-       pidLastError  = 0;
-       pidDerivative = 0;
-       rightFunc(0);
-     }
-
-    // Run at 50Hz
-    wait1Msec( 25 );
-  }
-}
-
-
-/*-----------------------------------------------------------------------------*/
-/*
-*/
-/*  main task
-/*
-*/
-/*-----------------------------------------------------------------------------*/
-/*
-void liftPID(int potentValue){
-	pidLiftRequestedValue+=potentValue;
-
-	// start the PID task
-  startTask( liftPIDController );
-	//	startTask( rightPIDController );
-
-  // use joystick to modify the requested position
-  while(true){
-  	// maximum change for pidRequestedValue will be 127/4*20, around 640 counts per second
-  	// free spinning motor is 100rmp so 1.67 rotations per second
-		// 1.67 * 360 counts is 600
-  	// send the motor off somewhere
-  	wait1Msec(20);
-  }
-	stopTask(liftPIDController);
-}
-*/
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
