@@ -115,6 +115,33 @@ void rightFunc(int speed2){
 		}
 	}
 
+	void clearLCD(){
+		clearLCDLine(0);
+		clearLCDLine(1);
+	}
+
+	string mainBattery, backupBattery;
+
+	//void lcd display voltage
+	void lcdBattery(){
+
+		clearLCD();
+
+		//Display the Primary Robot battery voltage
+		displayLCDString(0, 0, "Primary: ");
+		sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0,'V'); //Build the value to be displayed
+		displayNextLCDString(mainBattery);
+
+		//Display the Backup battery voltage
+		displayLCDString(1, 0, "Backup: ");
+		sprintf(backupBattery, "%1.2f%c", BackupBatteryLevel/1000.0, 'V');	//Build the value to be displayed
+		displayNextLCDString(backupBattery);
+
+		//Short delay for the LCD refresh rate
+		wait1Msec(100);
+	}
+
+
 	void puncherFunc(int power){
 		motor[puncher]=power;
 	}
@@ -154,9 +181,6 @@ task usercontrol(){
 					delayFunc(500);
 				}
 			}
-
-
-
 
 			// Intake program
 			if (vexRT[Btn5U]==1){
