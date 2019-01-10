@@ -208,6 +208,7 @@ void menuFunc(){
 	}
 }
 */
+
 //lcd driver control
 task lcd(){
 	clearLCD();
@@ -764,10 +765,12 @@ task usercontrol(){
 			// Puncher program (find in functions.c)
 			if (vexRT[Btn6UXmtr2]==1){
 					startTask(puncherOn);
-					delayFunc(1000);
-					stopTask(puncherOn);
-					startTask(puncherOff);
-					stopTask(puncherOff);
+			}else{
+				puncherFunc(0);
+			}
+
+			if (vexRT[Btn6U]==1){
+					startTask(puncherOn);
 			}else{
 				puncherFunc(0);
 			}
@@ -802,7 +805,7 @@ task usercontrol(){
 					delayFunc(500);
 				}
 				else if(driveReverse==true){
-					waitUntil(vexRT[Btn8D]==0);
+					waitUntil(vexRT[Btn8DXmtr2]==0);
 					driveReverse=false;
 					delayFunc(500);
 				}
