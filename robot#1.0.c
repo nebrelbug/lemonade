@@ -497,6 +497,7 @@ task intakeOff(){
 		intakeFunc(0);
 	}
 }
+
 task intakeDown(){
 	while(true){
 		intakeFunc(-127);
