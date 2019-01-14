@@ -367,6 +367,20 @@ void lcdBattery(){
 	wait1Msec(100);
 }
 
+bool lcdEncodeBool=false;
+
+task lcdEncode(){
+	clearLCD();
+	while(true){
+		displayLCDPos(0,0);
+		displayNextLCDString("> Enc: ");
+		displayNextLCDNumber(SensorValue[rightEncoder]);
+		displayLCDPos(1,0);
+		displayNextLCDString("< Enc:  ");
+		displayNextLCDNumber(SensorValue[leftEncoder]);
+	}
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -393,6 +407,18 @@ task usercontrol(){
 
 	if (vexRT[Btn5D]){
 		lcdBattery();
+	}
+
+	if(vexRT[Btn7D]==1){
+		if(lcdEncodeBool==1){
+			stopTask(lcdEncode);
+			lcdEncodeBool=false;
+			waitUntil(vexRT[Btn7D]==0);
+		}else if(lcdEncodeBool==0){
+			startTask(lcdEncode);
+			lcdEncodeBool=true;
+			waitUntil(vexRT[Btn7D]==0);
+		}
 	}
 
 	//reverse drive so that you can easily flip caps (find in functions)
