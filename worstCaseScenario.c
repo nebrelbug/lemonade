@@ -123,6 +123,11 @@ void intake2Func(int power2){
 	motor[intake2]=power2;
 }
 
+void intakeFunc(int power1, int power2){
+	intake1Func(power1);
+	intake2Func(power2);
+}
+
 /*-----------------------------------------------------------------------------*/
 /*                                                                             */
 /*  pid control task                                                           */
@@ -170,15 +175,33 @@ task puncherOff(){
 	}
 }
 
-void turnRight(int rightVal){
-	resetEncoders();
-  while(SensorValue(leftEncoder) < rightVal)//While leftEncoder has counted less than 1800 counts
-	{
-		//Turn Right
-    rightFunc(-127);// port2 is run at full (127) power forward
-		leftFunc(127);      //Motor on port3 is run at full (-127) power reverse	}
+task intakeOn(){
+	while(true){
+		intakeFunc(127,127);
 	}
 }
+
+task intakeOff(){
+	while(true){
+		intakeFunc(0,0);
+	}
+}
+
+/*--
+
+task upIntakeOn(){
+	while(true){
+		intake2Func(-127);
+	}
+}
+
+task upIntakeOff(){
+	while(true){
+		intake2Func(0);
+	}
+}
+
+--*/
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -209,6 +232,8 @@ void pre_auton(){
 	SmartMotorCurrentMonitorEnable();
 	// Smart motor start
 	SmartMotorRun();
+
+	resetEncoders();
 }
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -226,20 +251,81 @@ void auton(){
 	//1200 from place to flag or to alliance park
 	//2000 from place to center
 
+	//puncher on
 	startTask(puncherOn);
-	delayFunc(800);
+	delayFunc(600);
 	stopTask(puncherOn);
 	startTask(puncherOff);
 	stopTask(puncherOff);
 
+	//intake on
+	startTask(intakeOn);
+
+	//drive forward to toggle small flag
 	drivePID(1150,1150);
-	drivePID(-2000,-2000);
-  // If we are using an encoder then clear it
-	resetEncoders();
 
-	turnRight(205);
+	//intake stop
+	stopTask(intakeOn);
+	startTask(intakeOff);
+	stopTask(intakeOff);
 
-	drivePID(1200,1200);
+/*--
+
+	//drive backwards
+	drivePID(-1150,-1150);
+
+	//drive turn 90
+	drivePID(600,-600);
+
+	//intake on
+	startTask(intakeOn);
+
+	//forward 2.5 squares
+	drivePID(1500,1500);
+
+	//wait until ballIntake sensor ==correct value
+	waitUntil(SensorValue[ballIntake]==SensorValue[ballIntake]);
+
+	//delete this when ballIntake sensor works
+	delayFunc(600);
+
+	//intake off
+	stopTask(intakeOn);
+	startTask(intakeOff);
+	stopTask(intakeOff);
+
+	//top intake on backwards
+	startTask(upIntakeOn);
+	delayFunc(500);
+
+	//top intake stop
+	stopTask(upIntakeOn);
+	startTask(upIntakeOff);
+	stopTask(upIntakeOff);
+
+	//drive backwards one square
+	drivePID(-600,-600);
+
+	//turn a little bit
+	drivePID(200,-200);
+
+	//puncher on
+	startTask(puncherOn);
+	delayFunc(600);
+
+	//puncher off
+	stopTask(puncherOn);
+	startTask(puncherOff);
+	stopTask(puncherOff);
+
+	//unturn a little bit
+	drivePID(-200,200);
+
+	//drive backwards to platform
+	drivePID(-600,-600);
+
+--*/
+
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -287,13 +373,11 @@ void lcdBattery(){
 
 task usercontrol(){
 
-	// Drive program
-	while(true){
-
+	//display battery voltage
 	lcdBattery();
-	// User control drive functions
 
-	// drive program (find in functions.c)
+	while(true){
+	// drive program
 	drive();
 
 	// Puncher program
@@ -303,7 +387,15 @@ task usercontrol(){
 		puncherFunc(0);
 	}
 
-	//reverse drive so that you can easily flip caps (find in functions.c)
+	if(vexRT[Btn5U]==1){
+		auton();
+	}
+
+	if (vexRT[Btn5D]){
+		lcdBattery();
+	}
+
+	//reverse drive so that you can easily flip caps (find in functions)
 	if(vexRT[Btn8D]==1){
 		if(driveReverse==false){
 			waitUntil(vexRT[Btn8D]==0);
@@ -320,9 +412,9 @@ task usercontrol(){
 	if (vexRT[Btn5U]==1){
 		 intake1Func(127);
 		 intake2Func(127);
-		}else if (vexRT[Btn5D]==1){
+		}else if (vexRT[Btn6D]==1){
 			intake1Func(-127);
-		}else if(vexRT[Btn6D]==1){
+		}else if(vexRT[Btn5D]==1){
 			intake2Func(-127);
 		}else{
 			intake1Func(0);
@@ -330,4 +422,5 @@ task usercontrol(){
 		}
 	}
 }
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////
