@@ -92,7 +92,6 @@ float  pd_Kp = 0.7;
 float  pd_Ki = 0.09;
 float  pd_Kd = 0.5;
 
-
 static int   pidRunning = 1;
 static float pidRequestedValue;
 
@@ -163,46 +162,6 @@ void resetEncoders(){
   SensorValue[ rightEncoder ] = 0;
 }
 
-task puncherOn(){
-	while(true){
-		puncherFunc(127);
-	}
-}
-
-task puncherOff(){
-	while(true){
-		puncherFunc(0);
-	}
-}
-
-task intakeOn(){
-	while(true){
-		intakeFunc(127,127);
-	}
-}
-
-task intakeOff(){
-	while(true){
-		intakeFunc(0,0);
-	}
-}
-
-/*--
-
-task upIntakeOn(){
-	while(true){
-		intake2Func(-127);
-	}
-}
-
-task upIntakeOff(){
-	while(true){
-		intake2Func(0);
-	}
-}
-
---*/
-
 /////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -246,23 +205,70 @@ void pre_auton(){
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
-//auton
-void auton(){
-	//1200 from place to flag or to alliance park
-	//2000 from place to center
+task puncherOn(){
+	while(true){
+		puncherFunc(127);
+	}
+}
 
+task puncherOff(){
+	while(true){
+		puncherFunc(0);
+	}
+}
+
+task intakeOn(){
+	while(true){
+		intakeFunc(127,127);
+	}
+}
+
+task intakeOff(){
+	while(true){
+		intakeFunc(0,0);
+	}
+}
+
+/*--
+
+task upIntakeOn(){
+	while(true){
+		intake2Func(-127);
+	}
+}
+
+task upIntakeOff(){
+	while(true){
+		intake2Func(0);
+	}
+}
+
+--*/
+
+void punch(){
 	//puncher on
 	startTask(puncherOn);
 	delayFunc(600);
 	stopTask(puncherOn);
 	startTask(puncherOff);
 	stopTask(puncherOff);
+}
+
+//auton
+void auton(){
+	//1200 from place to flag or to alliance park
+	//2000 from place to center
+	punch();
 
 	//intake on
 	startTask(intakeOn);
 
 	//drive forward to toggle small flag
-	drivePID(1150,1150);
+	drivePID(450);
+
+	punch();
+
+	drivePID(700);
 
 	//intake stop
 	stopTask(intakeOn);
@@ -347,37 +353,36 @@ void clearLCD(){
 
 string mainBattery, backupBattery;
 
-//void lcd display voltage
-void lcdBattery(){
-	bLCDBacklight = true;									// Turn on LCD Backlight
-
-	clearLCD();
-
-	//Display the Primary Robot battery voltage
-	displayLCDString(0, 0, "Primary: ");
-	sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0,'V'); //Build the value to be displayed
-	displayNextLCDString(mainBattery);
-
-	//Display the Backup battery voltage
-	displayLCDString(1, 0, "Backup: ");
-	sprintf(backupBattery, "%1.2f%c", BackupBatteryLevel/1000.0, 'V');	//Build the value to be displayed
-	displayNextLCDString(backupBattery);
-
-	//Short delay for the LCD refresh rate
-	wait1Msec(100);
-}
-
 bool lcdEncodeBool=false;
 
+//void lcd display voltage
+void lcdBattery(){
+		clearLCD();
+
+		//Display the Primary Robot battery voltage
+		displayLCDString(0, 0, "Primary: ");
+		sprintf(mainBattery, "%1.2f%c", nImmediateBatteryLevel/1000.0,'V'); //Build the value to be displayed
+		displayNextLCDString(mainBattery);
+
+		//Display the Backup battery voltage
+		displayLCDString(1, 0, "Backup: ");
+		sprintf(backupBattery, "%1.2f%c", BackupBatteryLevel/1000.0, 'V');	//Build the value to be displayed
+		displayNextLCDString(backupBattery);
+
+		//Short delay for the LCD refresh rate
+		wait1Msec(100);
+}
+
 task lcdEncode(){
-	clearLCD();
 	while(true){
+		clearLCD();
 		displayLCDPos(0,0);
 		displayNextLCDString("> Enc: ");
 		displayNextLCDNumber(SensorValue[rightEncoder]);
 		displayLCDPos(1,0);
 		displayNextLCDString("< Enc:  ");
 		displayNextLCDNumber(SensorValue[leftEncoder]);
+		delayFunc(100);
 	}
 }
 
@@ -389,6 +394,8 @@ task usercontrol(){
 
 	//display battery voltage
 	lcdBattery();
+
+	bLCDBacklight = true;									// Turn on LCD Backlight
 
 	while(true){
 	// drive program
@@ -406,6 +413,7 @@ task usercontrol(){
 	}
 
 	if (vexRT[Btn5D]){
+
 		lcdBattery();
 	}
 

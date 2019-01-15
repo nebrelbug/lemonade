@@ -125,11 +125,10 @@ task leftPIDController()
         }
 }
 
-void drivePID(int clicks, int clicks2){
+void drivePID(int clicks){
 
 	// send the motor off somewhere
   pidRequestedValue= clicks*-1;
-  pdRequestedValue=  clicks2*-1;
 
 	// start the PID task
   startTask( leftPIDController );
@@ -138,16 +137,14 @@ void drivePID(int clicks, int clicks2){
 
   // use joystick to modify the requested position
   while(taskRunning){
-  	if(pidRequestedValue==clicks*-1){
-  		if(pdRequestedValue==clicks2*-1){
+  	if(pidRequestedValue==clicks*-1)
   			taskRunning=false;
-  		}
   	}
   	// maximum change for pidRequestedValue will be 127/4*20, around 640 counts per second
   	// free spinning motor is 100rmp so 1.67 rotations per second
 		// 1.67 * 360 counts is 600
   	wait1Msec(20);
-  }
+
   resetEncoders();
 	stopTask(leftPIDController);
 }
