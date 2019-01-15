@@ -74,8 +74,8 @@
 #define RIGHT_MOTOR_INDEX   right1
 #define PID_MOTOR_SCALE     -1
 
-#define PID_DRIVE_MAX       80
-#define PID_DRIVE_MIN     (-80)
+#define PID_DRIVE_MAX       60
+#define PID_DRIVE_MIN     (-60)
 
 // These could be constants but leaving
 // as variables allows them to be modified in the debugger "live"
@@ -248,7 +248,7 @@ task upIntakeOff(){
 void punch(){
 	//puncher on
 	startTask(puncherOn);
-	delayFunc(600);
+	delayFunc(1000);
 	stopTask(puncherOn);
 	startTask(puncherOff);
 	stopTask(puncherOff);
@@ -263,17 +263,23 @@ void auton(){
 	//intake on
 	startTask(intakeOn);
 
+	delayFunc(750);
+
 	//drive forward to toggle small flag
-	drivePID(450);
+	drivePID(650);
+
+	delayFunc(900);
 
 	punch();
 
-	drivePID(700);
+//	drivePID(500);
 
 	//intake stop
 	stopTask(intakeOn);
 	startTask(intakeOff);
 	stopTask(intakeOff);
+
+	drivePID(-1150);
 
 /*--
 
@@ -408,16 +414,16 @@ task usercontrol(){
 		puncherFunc(0);
 	}
 
-	if(vexRT[Btn5U]==1){
+	if(vexRT[Btn8U]==1){
 		auton();
 	}
 
-	if (vexRT[Btn5D]){
+	if (vexRT[Btn7D]){
 
 		lcdBattery();
 	}
 
-	if(vexRT[Btn7D]==1){
+	if(vexRT[Btn7U]==1){
 		if(lcdEncodeBool==1){
 			stopTask(lcdEncode);
 			lcdEncodeBool=false;
