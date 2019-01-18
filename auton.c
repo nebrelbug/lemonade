@@ -8,61 +8,25 @@ task leftPIDController()
     float  pidDerivative;
     float  pidDrive;
 
-    float  pdSensorCurrentValue;
-    float  pdError;
-    float  pdLastError;
-    float  pdIntegral;
-    float  pdDerivative;
-    float  pidDrive2;
-
     // If we are using an encoder then clear it
     if( SensorType[ LEFT_SENSOR_INDEX ] == sensorQuadEncoder )
         SensorValue[ LEFT_SENSOR_INDEX ] = 0;
 
-    if( SensorType[ RIGHT_SENSOR_INDEX ] == sensorQuadEncoder )
-        SensorValue[ RIGHT_SENSOR_INDEX ] = 0;
-
     // Init the variables - thanks Glenn :)
     pidLastError  = 0;
     pidIntegral   = 0;
-
-    pdLastError  = 0;
-    pdIntegral   = 0;
 
     while( true ){
     	if( pidRunning ){
         if(pidSensorCurrentValue==pidRequestedValue){
         	taskRunning = false;
         	stopTask(leftPIDController);
-      	}
-
-        // Is PID control active ?
-        if( pdRunning )
-            {
-            // Read the sensor value and scale
-            pdSensorCurrentValue = SensorValue[ RIGHT_SENSOR_INDEX ] * PID_SENSOR_SCALE;
-
                         // Read the sensor value and scale
             pidSensorCurrentValue = SensorValue[ LEFT_SENSOR_INDEX ] * PID_SENSOR_SCALE;
 
 
             // calculate error
             pidError = pidSensorCurrentValue - pidRequestedValue;
-
-            // calculate error
-            pdError = pdSensorCurrentValue - pdRequestedValue;
-
-            // integral - if Ki is not 0
-            if( pd_Ki != 0 )
-                {
-                // If we are inside controlable window then integrate the error
-                if( abs(pdError) < PD_INTEGRAL_LIMIT )
-                    pdIntegral = pdIntegral + pdError;
-                else
-                    pdIntegral = 0;
-                }
-            else
-                pdIntegral = 0;
 
                         // integral - if Ki is not 0
             if( pid_Ki != 0 )
@@ -80,14 +44,8 @@ task leftPIDController()
             pidDerivative = pidError - pidLastError;
             pidLastError  = pidError;
 
-            // calculate the derivative
-            pdDerivative = pdError - pdLastError;
-            pdLastError  = pdError;
-
             // calculate drive
             pidDrive = (pid_Kp * pidError) + (pid_Ki * pidIntegral) + (pid_Kd * pidDerivative);
-
-            pidDrive2 = (pd_Kp * pidError) + (pd_Ki * pidIntegral) + (pd_Kd * pidDerivative);
 
             // limit drive
             if( pidDrive > PID_DRIVE_MAX )
@@ -95,13 +53,8 @@ task leftPIDController()
             if( pidDrive < PID_DRIVE_MIN )
                 pidDrive = PID_DRIVE_MIN;
 
-            if( pidDrive2 > PID_DRIVE_MAX )
-                pidDrive2 = PID_DRIVE_MAX;
-            if( pidDrive2 < PID_DRIVE_MIN )
-                pidDrive2 = PID_DRIVE_MIN;
-
             leftFunc(pidDrive);
-						rightFunc(pidDrive2);
+						rightFunc(pidDrive);
 					}
       	}else{
             // clear all
@@ -109,12 +62,6 @@ task leftPIDController()
             pidLastError  = 0;
             pidIntegral   = 0;
             pidDerivative = 0;
-
-            // clear all
-            pdError      = 0;
-            pdLastError  = 0;
-            pdIntegral   = 0;
-            pdDerivative = 0;
 
             leftFunc(0);
             rightFunc(0);
