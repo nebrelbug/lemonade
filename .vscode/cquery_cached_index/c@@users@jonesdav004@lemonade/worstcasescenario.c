@@ -123,9 +123,9 @@ void intakeFunc(int power1, int power2){
 /*-----------------------------------------------------------------------------*/
 
 void leftFunc(int speed1){
-	speed1*=1.0;
+	speed1*=1.1;
 	SetMotor(left1,speed1);
-	SetMotor(left2,speed1);
+	SetMotor(left2,speed1);\
 	SetMotor(left3,speed1);
 }
 
@@ -138,8 +138,8 @@ void rightFunc(int speed2){
 
 void drive(){
 	if(driveReverse==true){
-		leftFunc(vexRT[Ch2]);
-		rightFunc(vexRT[Ch3]*-1);
+		leftFunc(vexRT[Ch2]*-1);
+		rightFunc(vexRT[Ch3]);
 	}else if(driveReverse==false){
 		rightFunc(vexRT[Ch2]);
 		leftFunc(vexRT[Ch3]*-1);
@@ -170,6 +170,8 @@ void pre_auton(){
 	// SmartMotorsAddPowerExtender( motorA, motorB, motorC, motorD );
 
 	// Link motors
+
+	// Drive motors
 	SmartMotorLinkMotors(left1,left2);
 	SmartMotorLinkMotors(right1,right2);
 	// Current monitor
@@ -233,7 +235,7 @@ task upIntakeOff(){
 void punch(){
 	//puncher on
 	startTask(puncherOn);
-	delayFunc(2000);
+	delayFunc(1000);
 	stopTask(puncherOn);
 	startTask(puncherOff);
 	stopTask(puncherOff);
@@ -263,6 +265,7 @@ void auton(){
 	stopTask(intakeOn);
 	startTask(intakeOff);
 	stopTask(intakeOff);
+
 
 	if(SensorValue[autonPotent]>=3000){
 		turnRight();
