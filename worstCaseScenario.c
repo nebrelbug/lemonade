@@ -136,6 +136,20 @@ void rightFunc(int speed2){
 	SetMotor(right3,speed2);
 }
 
+void leftAuton(int speed1){
+	speed1*=1.0;
+	setMotor(left1,speed1);
+	setMotor(left2,speed1);
+	setMotor(left3,speed1);
+}
+
+void rightAuton(int speed2){
+	speed2*=1.0;
+	setMotor(right1,speed2);
+	setMotor(right2,speed2);
+	setMotor(right3,speed2);
+}
+
 void drive(){
 	if(driveReverse==true){
 		leftFunc(vexRT[Ch2]);
@@ -241,103 +255,34 @@ void punch(){
 
 //auton
 void auton(){
+
+	resetEncoders();
 	//1200 from place to flag or to alliance park
 	//2000 from place to center
 	punch();
 
-/*--
-
-	if(SensorValue[autonPotent]>=3000){
-		turnLeft();
-	}else if(SensorValue[autonPotent]<=1000){
-		turnRight();
-	}
-
---*/
-
 	//intake on
 	startTask(intakeOn);
 
-/*--
-
 	//drive forward to toggle small flag
-	drivePID(1000);
+	if(SensorValue[rightEncoder]<=1500){
+		leftAuton(-127);
+		rightAuton(127);
+	}
 
-	drivePID(-1000);
+	if(vexRT[Btn8L]==1){
+		stopTask(autonomous);
+	}
 
---*/
 
-	delayFunc(5000);
+	delayFunc(500);
 
 	//intake stop
 	stopTask(intakeOn);
 	startTask(intakeOff);
 	stopTask(intakeOff);
 
-/*--
-
-	if(SensorValue[autonPotent]>=3000){
-		turnRight();
-	}else if(SensorValue[autonPotent]<=1000){
-		turnLeft();
-	}
-
-	punch();
-
-	//drive backwards
-	drivePID(-1150,-1150);
-
-	//drive turn 90
-	drivePID(600,-600);
-
-	//intake on
-	startTask(intakeOn);
-
-	//forward 2.5 squares
-	drivePID(1500,1500);
-
-	//wait until ballIntake sensor ==correct value
-	waitUntil(SensorValue[ballIntake]==SensorValue[ballIntake]);
-
-	//delete this when ballIntake sensor works
-	delayFunc(600);
-
-	//intake off
-	stopTask(intakeOn);
-	startTask(intakeOff);
-	stopTask(intakeOff);
-
-	//top intake on backwards
-	startTask(upIntakeOn);
-	delayFunc(500);
-
-	//top intake stop
-	stopTask(upIntakeOn);
-	startTask(upIntakeOff);
-	stopTask(upIntakeOff);
-
-	//drive backwards one square
-	drivePID(-600,-600);
-
-	//turn a little bit
-	drivePID(200,-200);
-
-	//puncher on
-	startTask(puncherOn);
-	delayFunc(600);
-
-	//puncher off
-	stopTask(puncherOn);
-	startTask(puncherOff);
-	stopTask(puncherOff);
-
-	//unturn a little bit
-	drivePID(-200,200);
-
-	//drive backwards to platform
-	drivePID(-600,-600);
-
---*/
+	resetEncoders();
 
 }
 
