@@ -91,6 +91,14 @@ bool taskRunning=false;
 
 bool driveReverse=false;
 
+int beforeLeft;
+
+int afterLeft;
+
+int beforeRight;
+
+int afterRight;
+
 /////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -122,32 +130,67 @@ void intakeFunc(int power1, int power2){
 /*                                                                             */
 /*-----------------------------------------------------------------------------*/
 
+float leftAdjust=1.0;
+
+float rightAdjust=1.0;
+
 void leftFunc(int speed1){
-	speed1*=1.0;
+	speed1*=leftAdjust;
 	SetMotor(left1,speed1);
 	SetMotor(left2,speed1);
 	SetMotor(left3,speed1);
 }
 
 void rightFunc(int speed2){
-	speed2*=1.0;
+	speed2*=rightAdjust;
 	SetMotor(right1,speed2);
 	SetMotor(right2,speed2);
 	SetMotor(right3,speed2);
 }
 
+float leftEncAuton(){
+	leftEncoder*=-1;
+	beforeLeft=leftEncoder;
+	delayFunc(100);
+	afterLeft=leftEncoder;
+	return(afterLeft-beforeLeft);
+}
+
+float rightEncAuton(){
+	rightEncoder*=1;
+	beforeRight=rightEncoder;
+	delayFunc(100);
+	afterRight=rightEncoder;
+	return((afterRight-beforeRight)*10);
+}
+
 void leftAuton(int speed1){
-	speed1*=1.0;
+	speed1*=leftAdjust;
 	setMotor(left1,speed1);
 	setMotor(left2,speed1);
 	setMotor(left3,speed1);
 }
 
 void rightAuton(int speed2){
-	speed2*=1.0;
+	speed2*=rightAdjust;
 	setMotor(right1,speed2);
 	setMotor(right2,speed2);
 	setMotor(right3,speed2);
+}
+
+task straighten(){
+	while(true){
+		if(leftEncAuton>rightEncAuton){
+			leftAdjust-=.05
+		}
+		if(leftEncAuton<rightEncAuton){
+			rightAdjust-=.05
+		}
+		if(leftEncAuton==rightEncAuton){
+			rightAdjust=1;
+			leftAdjust=1;
+		}
+	}
 }
 
 void drive(){
@@ -245,6 +288,7 @@ task upIntakeOff(){
 --*/
 
 void punch(){
+
 	//puncher on
 	startTask(puncherOn);
 	delayFunc(2000);
@@ -255,8 +299,8 @@ void punch(){
 
 //auton
 void auton(){
+	startTask(straighten);
 
-	resetEncoders();
 	//1200 from place to flag or to alliance park
 	//2000 from place to center
 	punch();
@@ -282,7 +326,7 @@ void auton(){
 	startTask(intakeOff);
 	stopTask(intakeOff);
 
-	resetEncoders();
+	stopTask(straighten);
 
 }
 
@@ -323,19 +367,6 @@ void lcdBattery(){
 
 		//Short delay for the LCD refresh rate
 		wait1Msec(100);
-}
-
-task lcdEncode(){
-	while(true){
-		clearLCD();
-		displayLCDPos(0,0);
-		displayNextLCDString("> Enc: ");
-		displayNextLCDNumber(SensorValue[rightEncoder]);
-		displayLCDPos(1,0);
-		displayNextLCDString("< Enc:  ");
-		displayNextLCDNumber(SensorValue[leftEncoder]);
-		delayFunc(100);
-	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
