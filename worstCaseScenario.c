@@ -1,7 +1,7 @@
 #pragma config(Sensor, in3,    autonPotent,    sensorPotentiometer)
 #pragma config(Sensor, in4,    ballIntake,     sensorLineFollower)
-#pragma config(Sensor, dgtl1,  leftEncoder,    sensorQuadEncoder)
-#pragma config(Sensor, dgtl3,  rightEncoder,   sensorQuadEncoder)
+#pragma config(Sensor, dgtl1,  rightEncoder,   sensorQuadEncoder)
+#pragma config(Sensor, dgtl3,  leftEncoder,    sensorQuadEncoder)
 #pragma config(Motor,  port1,           intake1,       tmotorVex393TurboSpeed_HBridge, openLoop)
 #pragma config(Motor,  port2,           left1,         tmotorVex393HighSpeed_MC29, openLoop)
 #pragma config(Motor,  port3,           left2,         tmotorVex393HighSpeed_MC29, openLoop)
@@ -72,8 +72,8 @@
 #define RIGHT_MOTOR_INDEX   right1
 #define PID_MOTOR_SCALE     -1
 
-#define PID_DRIVE_MAX       60
-#define PID_DRIVE_MIN     (-60)
+#define PID_DRIVE_MAX       80
+#define PID_DRIVE_MIN     (-80)
 
 // These could be constants but leaving
 // as variables allows them to be modified in the debugger "live"
@@ -245,24 +245,36 @@ void auton(){
 	//2000 from place to center
 	punch();
 
+/*--
+
 	if(SensorValue[autonPotent]>=3000){
 		turnLeft();
 	}else if(SensorValue[autonPotent]<=1000){
 		turnRight();
 	}
 
+--*/
+
 	//intake on
 	startTask(intakeOn);
+
+/*--
 
 	//drive forward to toggle small flag
 	drivePID(1000);
 
 	drivePID(-1000);
 
+--*/
+
+	delayFunc(5000);
+
 	//intake stop
 	stopTask(intakeOn);
 	startTask(intakeOff);
 	stopTask(intakeOff);
+
+/*--
 
 	if(SensorValue[autonPotent]>=3000){
 		turnRight();
@@ -271,8 +283,6 @@ void auton(){
 	}
 
 	punch();
-
-/*--
 
 	//drive backwards
 	drivePID(-1150,-1150);

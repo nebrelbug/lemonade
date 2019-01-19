@@ -75,7 +75,7 @@ task leftPIDController()
 void drivePID(int clicks){
 
 	// send the motor off somewhere
-  pidRequestedValue= clicks*1;
+  pidRequestedValue= clicks*-1;
 
 	// start the PID task
   startTask( leftPIDController );
