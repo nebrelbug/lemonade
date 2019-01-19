@@ -149,15 +149,13 @@ void rightFunc(int speed2){
 }
 
 float leftEncAuton(){
-	leftEncoder*=-1;
-	beforeLeft=leftEncoder;
+	beforeLeft=leftEncoder*-1;
 	delayFunc(100);
 	afterLeft=leftEncoder;
 	return(afterLeft-beforeLeft);
 }
 
 float rightEncAuton(){
-	rightEncoder*=1;
 	beforeRight=rightEncoder;
 	delayFunc(100);
 	afterRight=rightEncoder;
@@ -180,13 +178,13 @@ void rightAuton(int speed2){
 
 task straighten(){
 	while(true){
-		if(leftEncAuton>rightEncAuton){
-			leftAdjust-=.05
+		if(leftEncAuton()>rightEncAuton()){
+			leftAdjust-=.05;
 		}
-		if(leftEncAuton<rightEncAuton){
-			rightAdjust-=.05
+		if(leftEncAuton()<rightEncAuton()){
+			rightAdjust-=.05;
 		}
-		if(leftEncAuton==rightEncAuton){
+		if(leftEncAuton()==rightEncAuton()){
 			rightAdjust=1;
 			leftAdjust=1;
 		}
@@ -349,8 +347,6 @@ void clearLCD(){
 
 string mainBattery, backupBattery;
 
-bool lcdEncodeBool=false;
-
 //void lcd display voltage
 void lcdBattery(){
 		clearLCD();
@@ -397,18 +393,6 @@ task usercontrol(){
 
 	if (vexRT[Btn7D]){
 		lcdBattery();
-	}
-
-	if(vexRT[Btn7U]==1){
-		if(lcdEncodeBool==1){
-			stopTask(lcdEncode);
-			lcdEncodeBool=false;
-			waitUntil(vexRT[Btn7D]==0);
-		}else if(lcdEncodeBool==0){
-			startTask(lcdEncode);
-			lcdEncodeBool=true;
-			waitUntil(vexRT[Btn7D]==0);
-		}
 	}
 
 	//reverse drive so that you can easily flip caps (find in functions)
