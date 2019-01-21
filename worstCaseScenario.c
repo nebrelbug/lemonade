@@ -24,7 +24,6 @@
 // SmartMotorLibrary
 #include "jpearman/SmartMotorLib.c"
 
-
 #include "Vex_Competition_Includes.c"  // Main competition background code...do not modify!
 #pragma systemFile
 
