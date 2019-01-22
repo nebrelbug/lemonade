@@ -99,7 +99,7 @@ void initialize() {
 
 lcdClear(uart2);
 lcdSetText(uart2,
-1, "Run Auton Prog")
+1, "Run Auton Prog");
 lcdSetText(uart2,
-2, autonRun)
+2, autonRun);
 }
