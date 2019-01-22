@@ -32,40 +32,40 @@ void operatorControl() {
 		drive();
 
 		// Puncher program
-		if (joystickGetDigital(1, 6, JOY_UP)==1){
+        if (joystickGetDigital(joyMain, 6, JOY_UP) == 1) {
 			puncherFunc(127);
 		}else{
 			puncherFunc(0);
 		}
 
-		if(joystickGetDigital(1, 7, JOY_UP)==1){
+        if (joystickGetDigital(joyMain, 7, JOY_UP) == 1) {
 			auton();
 		}
 
-		if (joystickGetDigital(1, 7, JOY_DOWN)==1){
+        if (joystickGetDigital(joyMain, 7, JOY_DOWN) == 1) {
 			lcdBattery();
 		}
 
 		//reverse drive so that you can easily flip caps (find in functions)
-		if(joystickGetDigital(1, 8, JOY_DOWN)==1){
+        if (joystickGetDigital(joyMain, 8, JOY_DOWN) == 1) {
 			if(driveReverse==false){
-				waitUntil(joystickGetDigital(1, 8, JOY_DOWN),1000);
+                waitUntil(joystickGetDigital(joyMain, 8, JOY_DOWN), 1000);
 				driveReverse=true;
 				delayFunc(500);
 			}else if(driveReverse==true){
-				waitUntil(joystickGetDigital(1, 8, JOY_DOWN),1000);
+                waitUntil(joystickGetDigital(joyMain, 8, JOY_DOWN), 1000);
 				driveReverse=false;
 				delayFunc(500);
 			}
 		}
 
 		// Intake program
-		if (joystickGetDigital(1, 5, JOY_UP)==1){
+        if (joystickGetDigital(joyMain, 5, JOY_UP) == 1) {
 			 intake1Func(127);
 			 intake2Func(127);
-		 }else if (joystickGetDigital(1, 6, JOY_DOWN)==1){
+        } else if (joystickGetDigital(joyMain, 6, JOY_DOWN) == 1) {
 				intake1Func(-127);
-			}else if(joystickGetDigital(1, 5, JOY_DOWN)==1){
+        } else if (joystickGetDigital(joyMain, 5, JOY_DOWN) == 1) {
 				intake2Func(-127);
 			}else{
 				intake1Func(0);
