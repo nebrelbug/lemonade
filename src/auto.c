@@ -24,5 +24,57 @@
  * so, the robot will await a switch to another mode or disable/enable cycle.
  */
 void autonomous() {
-
+    switch (autonRun) {
+        case autonRun=0:
+            auton0();
+            break;
+        case autonRun=1:
+            auton1();
+            break;
+        case autonRun=2:
+            auton2();
+            break;
+        case autonRun=3:
+            auton3();
+            break;
+        case autonRun=4:
+            auton4();
+            break;
+        case autonRun=5:
+            auton5();
+            break;
+        case autonRun=6:
+            auton6();
+            break;
+        case autonRun=7:
+            auton7();
+            break;
+        case autonRun=8:
+            auton8();
+            break;
+        case autonRun=9:
+            auton9();
+            break;
+        case autonRun=10:
+            auton10();
+            break;
+        case autonRun=11:
+            auton11();
+            break;
+        case autonRun=12:
+            auton12();
+            break;
+        case autonRun=13:
+            auton13();
+            break;
+        case autonRun=14:
+            auton14();
+            break;
+        case autonRun=15:
+            auton15();
+            break;
+        default:
+            auton_1();
+            break;
+    }
 }

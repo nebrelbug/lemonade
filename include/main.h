@@ -27,58 +27,45 @@
 
 #include <API.h>
 
+//drive Reverse bool to reverse drive set to false
 bool driveReverse=false;
 
-void delayFunc(int time){
-  delayMicroseconds(time);
-}
+//all the motor ports
+int intake1 = 1;
+int left1 = 2;
+int left2 = 3;
+int left3 = 4;
+int right1 = 5;
+int right2 = 6;
+int right3 = 7;
+//port 8 not used
+int puncher = 9;
+int intake2 = 10;
 
-void puncherFunc(int power){
-	motorSet(9,power);
-}
+//the joystick vars
+int joyMain = 1;
+int joyPartner = 2;
 
-void intake1Func(int power1){
-	motorSet(1,power1);
-}
+//the joystick analog vars
+int analogLeftX = 1;
+int analogLeftY = 2;
+int analogRightY = 3;
+int analogRightX = 4;
 
-void intake2Func(int power2){
-	motorSet(10,power2);
-}
+//auton cases sensors
+int square = 1;
+int selection = 2;
 
-void intakeFunc(int power1, int power2){
-	intake1Func(power1);
-	intake2Func(power2);
-}
+//auton cases
+int autonRun;
 
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*  pid control task                                                           */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
+//auton cutoffs
+int cutoffs1[] = {-4096, -2048, 0, 2048, 4096};
+int cutoffs2[] = {-4096, -2048, 0, 2048, 4096};
 
-void leftFunc(int speed1){
-	speed1*=1.1;
-	motorSet(2,speed1);
-	motorSet(3,speed1);
-	motorSet(4,speed1);
-}
-
-void rightFunc(int speed2){
-	speed2*=1.0;
-	motorSet(5,speed2);
-	motorSet(6,speed2);
-	motorSet(7,speed2);
-}
-
-void drive(){
-	if(driveReverse==true){
-		leftFunc(joystickGetAnalog(1, 2)*-1);
-		rightFunc(joystickGetAnalog(1, 3)*-1);
-	}else if(driveReverse==false){
-		rightFunc(joystickGetAnalog(1, 3));
-		leftFunc(joystickGetAnalog(1, 2));
-	}
-}
+//auton reading potentionmeters
+int val1 = analogRead[square];
+int val2 = analogRead[selection];
 
 // Allow usage of this file in C++ programs
 #ifdef __cplusplus

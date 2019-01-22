@@ -37,6 +37,345 @@ extern "C" {
 #define PROS_VERSION_PATCH 2
 #define PROS_VERSION_STRING "2.12.2"
 
+// -------------------- 72832S defined functions ---------------------
+
+/**
+ * Reads the int power and sets the puncher motor equal to it
+ *
+ * @param channel the channel to set puncher motor
+ */
+
+//puncher fuctions and calling
+void puncherFunc(int power) {
+	motorSet(puncher, power);
+}
+/**
+ * Reads the int speed1 and sets the left drive equal to it * speed1
+ *
+ * @param channel the channel to set left drive motors * speed1
+ */
+
+//drive Functions and calling
+void leftFunc(int speed1) {
+	speed1 *= 1.0;
+	motorSet(left1, speed1);
+	motorSet(left2, speed1);
+	motorSet(left3, speed1);
+}
+
+/**
+ * Reads the int speed2 and sets the right drive equal to it * speed2
+ *
+ * @param channel the channel to set right drive motors * speed2
+ */
+
+void rightFunc(int speed2) {
+	speed2 *= 1.0;
+	motorSet(right1, speed2);
+	motorSet(right2, speed2);
+	motorSet(right3, speed2);
+}
+
+/**
+ * Takes the analog value of a joystick and sets it's power equal to either side of the drive +- 25
+ *
+ * @param channel the channel to set right and left drive motors
+ */
+
+void drive() {
+	if (driveReverse) {
+		leftFunc(joystickGetAnalog(joyMain, analogLeftY) * -1);
+		rightFunc(joystickGetAnalog(joyMain, analogRightY) * -1);
+	} else if (!driveReverse) {
+		rightFunc(joystickGetAnalog(joyMain, analogLeftY));
+		leftFunc(joystickGetAnalog(joyMain, analogRightY));
+	}
+}
+/**
+ * Reads the int power1 and sets the intake1 motor equal to it
+ *
+ * @param channel the channel to set intake1 motor
+ */
+
+//intake functions and calling
+void intake1Func(int power1) {
+	motorSet(intake1, power1);
+}
+
+/**
+ * Reads the int power2 and sets the intake2 motor equal to it
+ *
+ * @param channel the channel to set intake2 motor
+ */
+
+void intake2Func(int power2) {
+	motorSet(intake10, power2);
+}
+
+/**
+ * Reads the int power1 and power 2 sends it to the intake1Func and intake2Func
+ *
+ * @param channel the channel to intake1Func
+ * @param channel the channel to intake2Func
+ */
+
+void intakeFunc(int power1, int power2) {
+	intake1Func(power1);
+	intake2Func(power2);
+}
+
+// ------------------- 72832S autonomous functions -------------------
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+task puncherOn() {
+	while (true) {
+		puncherFunc(127);
+	}
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+task puncherOff() {
+	while (true) {
+		puncherFunc(0);
+	}
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+task intakeOn() {
+	while (true) {
+		intakeFunc(127, 127);
+	}
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+task intakeOff() {
+	while (true) {
+		intakeFunc(0, 0);
+	}
+}
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+/*--
+
+task upIntakeOn(){
+	while(true){
+		intake2Func(-127);
+	}
+}
+
+--*/
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+/*--
+task upIntakeOff(){
+	while(true){
+		intake2Func(0);
+	}
+}
+ --*/
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void punch() {
+
+	//puncher on
+	startTask(puncherOn);
+	delayFunc(2000);
+	stopTask(puncherOn);
+	startTask(puncherOff);
+	stopTask(puncherOff);
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton1() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton2() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton3() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton4() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton5() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton6() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton7() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton8() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton9() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton10() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton11() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton12() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton13() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton14() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton15() {
+	punch();
+}
+
+/**
+ * Auton Placeholder; placeholder for auton
+ *
+ * @param channel the channel the likelihood of having an paramater
+ */
+
+void auton_1() {
+	punch();
+}
+
 // -------------------- VEX competition functions --------------------
 
 /**

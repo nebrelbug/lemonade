@@ -14,8 +14,8 @@
  * VEX Cortex is starting up. As the scheduler is still paused, most API functions will fail.
  *
  * The purpose of this function is solely to set the default pin modes (pinMode()) and port
- * states (digitalWrite()) of limit switches, push buttons, and solenoids. It can also safely
- * configure a UART port (usartOpen()) but cannot set up an LCD (lcdInit()).
+ * states (digitalWrite()) of limit ifes, push buttons, and solenoids. It can also safely
+ * configure a UART port (usartOpen()) but cannot set up an LCD (lcd)Init()).
  */
 void initializeIO() {
     uartOpen(2);
@@ -35,5 +35,71 @@ void initializeIO() {
  * can be implemented in this task if desired.
  */
 void initialize() {
-    
+    //encoder initializing
+    leftEncode encoderInit(1, 2, true);
+    rightEncode encoderInit(3, 4, false);
+
+    //ultrasonic initializing
+    left1Sonic ultrasonicInit(5, 6);
+    left2Sonic ultrasonicInit(7, 8);
+    right1Sonic ultrasonicInit(9, 10);
+    right2Sonic ultrasonicInit(11, 12);
+
+    //LCD Initiallize
+    lcdInit(uart2);
+    lcdSetBacklight(uart2, true);
+    lcdClear(uart2);
+    lcdSetText(uart2, 1, "LCD INITITIALIZE");
+
+    //auton menu
+    if (val1 >= cutoffs[0] && val1 < cutoffs[1]) {
+        if (val2 >= cutoffs[0] && val2 < cutoffs[1]) {
+            autonRun = 0;
+            else if (val2 >= cutoffs[1] && val2 < cutoffs[2])
+                autonRun = 1;
+            else if (val2 >= cutoffs[2] && val2 < cutoffs[3])
+                autonRun = 2;
+            else if (val2 >= cutoffs[3] && val2 < cutoffs[4])
+                autonRun = 3;
+        }
+    } else if (val1 >= cutoffs[1] && val1 < cutoffs[2]) {
+        if (val2 >= cutoffs[0] && val2 < cutoffs[1]) {
+            autonRun = 4;
+            else if (val2 >= cutoffs[1] && val2 < cutoffs[2])
+                autonRun = 5;
+            else if (val2 >= cutoffs[2] && val2 < cutoffs[3])
+                autonRun = 6;
+            else if (val2 >= cutoffs[3] && val2 < cutoffs[4])
+                autonRun = 7;
+        }
+    } else if (val1 >= cutoffs[2] && val1 < cutoffs[3]) {
+        if (val2 >= cutoffs[0] && val2 < cutoffs[1]) {
+            autonRun = 8;
+            else if (val2 >= cutoffs[1] && val2 < cutoffs[2])
+                autonRun = 9;
+            else if (val2 >= cutoffs[2] && val2 < cutoffs[3])
+                autonRun = 10;
+            else if (val2 >= cutoffs[3] && val2 < cutoffs[4])
+                autonRun = 11;
+        }
+    } else if (val1 >= cutoffs[3] && val1 < cutoffs[4]) {
+        if (val2 >= cutoffs[0] && val2 < cutoffs[1]) {
+            autonRun = 12;
+            else if (val2 >= cutoffs[1] && val2 < cutoffs[2])
+                autonRun = 13;
+            else if (val2 >= cutoffs[2] && val2 < cutoffs[3])
+                autonRun = 14;
+            else if (val2 >= cutoffs[3] && val2 < cutoffs[4])
+                autonRun = 15;
+        }
+    } else {
+        autonRun = -1;
+    }
+}
+
+lcdClear(uart2);
+lcdSetText(uart2,
+1, "Run Auton Prog")
+lcdSetText(uart2,
+2, autonRun)
 }

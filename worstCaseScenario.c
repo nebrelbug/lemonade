@@ -90,14 +90,6 @@ bool taskRunning=false;
 
 bool driveReverse=false;
 
-int beforeLeft;
-
-int afterLeft;
-
-int beforeRight;
-
-int afterRight;
-
 /////////////////////////////////////////////////////////////////////////////////////////
 
 /////////////////////////////////////////////////////////////////////////////////////////
@@ -123,12 +115,6 @@ void intakeFunc(int power1, int power2){
 	intake2Func(power2);
 }
 
-/*-----------------------------------------------------------------------------*/
-/*                                                                             */
-/*  pid control task                                                           */
-/*                                                                             */
-/*-----------------------------------------------------------------------------*/
-
 float leftAdjust=1.0;
 
 float rightAdjust=1.0;
@@ -147,6 +133,27 @@ void rightFunc(int speed2){
 	SetMotor(right3,speed2);
 }
 
+int beforeLeft;
+
+int afterLeft;
+
+int beforeRight;
+
+int afterRight;
+
+void driveAuton(int speed1, int speed2) {
+	if (leftEncAuton > rightEncAuton) {
+
+	}
+
+	setMotor(left1, speed1);
+	setMotor(left2, speed1);
+	setMotor(left3, speed1);
+	setMotor(right1, speed2);
+	setMotor(right2, speed2);
+	setMotor(right3, speed2)
+}
+
 float leftEncAuton(){
 	beforeLeft=leftEncoder*-1;
 	delayFunc(100);
@@ -159,20 +166,6 @@ float rightEncAuton(){
 	delayFunc(100);
 	afterRight=rightEncoder;
 	return((afterRight-beforeRight)*10);
-}
-
-void leftAuton(int speed1){
-	speed1*=leftAdjust;
-	setMotor(left1,speed1);
-	setMotor(left2,speed1);
-	setMotor(left3,speed1);
-}
-
-void rightAuton(int speed2){
-	speed2*=rightAdjust;
-	setMotor(right1,speed2);
-	setMotor(right2,speed2);
-	setMotor(right3,speed2);
 }
 
 task straighten(){
@@ -191,10 +184,10 @@ task straighten(){
 }
 
 void drive(){
-	if(driveReverse==true){
+	if (driveReverse) {
 		leftFunc(vexRT[Ch2]);
 		rightFunc(vexRT[Ch3]*-1);
-	}else if(driveReverse==false){
+	} else if (!driveReverse) {
 		rightFunc(vexRT[Ch2]);
 		leftFunc(vexRT[Ch3]*-1);
 	}
@@ -396,11 +389,11 @@ task usercontrol(){
 
 	//reverse drive so that you can easily flip caps (find in functions)
 	if(vexRT[Btn8D]==1){
-		if(driveReverse==false){
+		if (!driveReverse) {
 			waitUntil(vexRT[Btn8D]==0);
 			driveReverse=true;
 			delayFunc(500);
-		}else if(driveReverse==true){
+		} else if (driveReverse) {
 			waitUntil(vexRT[Btn8D]==0);
 			driveReverse=false;
 			delayFunc(500);
